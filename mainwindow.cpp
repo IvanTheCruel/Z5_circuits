@@ -50,7 +50,7 @@ void MainWindow::on_pushButton_clicked()
     T = ui->lineEdit_2->text().toDouble();
     model1 = new QStandardItemModel(5,N);
     ui->tableView->setModel(model1);
-    model1->setVerticalHeaderLabels({"t","xn","Xn","A","w"});
+    model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ω"});
 
     if (ui->pushButton->text() == "Задать таблицу"){
         ui->pushButton->setText("Изменить таблицу");
@@ -64,8 +64,8 @@ void MainWindow::on_pushButton_clicked()
             model1->setData(ind, h*i);
 
             //это надо так то задавать руками
-            //            ind = model1->index(1,i);
-            //            model1->setData(ind, abs(cos(h*i)));
+            ind = model1->index(1,i);
+            model1->setData(ind, abs(cos(h*i)));
         }
     } else {
         ui->pushButton->setText("Задать таблицу");
@@ -103,14 +103,25 @@ void MainWindow::on_pushButton_2_clicked()
     QVector<double> xn;
     for (int i = 0; i<N; i++){
         ind = model1->index(1,i);
-        xn[i] = ind.data().toDouble();
+        xn.emplaceBack(ind.data().toDouble());
     }
 
 
     QVector<complex<double>> Xn;
     for (int k = 0; k<N; k++){
-        for (int i = 0; i<N; i++){
-
+        complex<double> sum = 0;
+        for (int n = 0; n<N; n++){
+           sum += xn[n]*exp(-2*M_PI*k*n/N*1i);
         }
+        Xn.emplaceBack(sum);
+
+        ind = model1->index(2,k);
+        model1->setData(ind, abs(Xn[k])/N);
+
+        ind = model1->index(3,k);
+        model1->setData(ind, arg(Xn[k]));
+
+        ind = model1->index(4,k);
+        model1->setData(ind, k*2*M_PI/T);
     }
 }
