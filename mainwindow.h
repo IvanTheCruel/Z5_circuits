@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 #include <cmath>
+#include <complex>
 
 namespace Ui {
 class MainWindow;
@@ -25,7 +26,11 @@ private slots:
     void on_pushButton_clicked();
 
     void test_slot(QModelIndex,QModelIndex,QVector<int>);
+    void on_pushButton_2_clicked();
+
 private:
+    int N;
+    double T;
     void enable_button1();
     //лучше пусть будут фолс
     bool check_N = true;
