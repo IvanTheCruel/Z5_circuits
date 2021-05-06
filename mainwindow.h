@@ -12,7 +12,6 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -25,6 +24,7 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void test_slot(QModelIndex,QModelIndex,QVector<int>);
 private:
     void enable_button1();
     //лучше пусть будут фолс

@@ -10,8 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     //fuck off
     enable_button1();
-    //    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
-
+   //    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
 }
 
 MainWindow::~MainWindow()
@@ -49,7 +48,6 @@ void MainWindow::on_pushButton_clicked()
 {
     int N = ui->lineEdit->text().toInt();
     double T = ui->lineEdit_2->text().toDouble();
-
     model1 = new QStandardItemModel(5,N);
     ui->tableView->setModel(model1);
     model1->setVerticalHeaderLabels({"t","xn","Xn","A","w"});
@@ -63,9 +61,11 @@ void MainWindow::on_pushButton_clicked()
         ind = model1->index(1,i);
         model1->setData(ind, abs(cos(h*i)));
     }
+    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_slot(QModelIndex,QModelIndex,QVector<int>)), Qt::DirectConnection);
 
+}
 
-
-
-
+void MainWindow::test_slot(QModelIndex, QModelIndex, QVector<int>)
+{
+     ui->pushButton_2->setEnabled(true);
 }
