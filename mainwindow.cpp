@@ -110,10 +110,11 @@ void MainWindow::on_pushButton_2_clicked()
 
 
     QVector<complex<double>> Xn;
+    complex<double> rk = 1i; //по странной причине не работает без локальной переменной
     for (int k = 0; k<N; k++){
         complex<double> sum = 0;
         for (int n = 0; n<N; n++){
-           sum += xn[n]*exp(-2*M_PI*k*n/N*1i);
+           sum += xn[n]*exp(-2*M_PI*k*n/N*rk);
         }
         Xn.push_back(sum);
 

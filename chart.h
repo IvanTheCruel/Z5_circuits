@@ -2,7 +2,8 @@
 #define CHART_H
 
 #include <QDialog>
-#include <>
+#include <QGraphicsView>
+#include <cmath>
 
 namespace Ui {
 class Chart;
