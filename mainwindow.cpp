@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+using namespace std;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -45,7 +47,7 @@ void MainWindow::on_lineEdit_2_textChanged(const QString &arg1)
 
 void MainWindow::on_pushButton_clicked()
 {
-    size_t N = ui->lineEdit->text().toInt();
+    int N = ui->lineEdit->text().toInt();
     double T = ui->lineEdit_2->text().toDouble();
 
     model1 = new QStandardItemModel(5,N);
@@ -53,13 +55,17 @@ void MainWindow::on_pushButton_clicked()
     model1->setVerticalHeaderLabels({"t","xn","Xn","A","w"});
 
     double h = T/(N-1);
-    for(size_t i = 0; i<N; i++){
+    for(int i = 0; i<N; i++){
         ind = model1->index(0,i);
         model1->setData(ind, h*i);
 
         //это надо так то задавать руками
         ind = model1->index(1,i);
-        model1->setData(ind, abs(sin(h*i)));
+        model1->setData(ind, abs(cos(h*i)));
     }
+
+
+
+
 
 }
