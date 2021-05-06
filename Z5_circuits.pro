@@ -25,15 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    chart.cpp \
         main.cpp \
-        mainwindow.cpp \
-    fourier_transform.cpp
+        mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h \
-    fourier_transform.h
+    chart.h \
+        mainwindow.h
 
 FORMS += \
+        chart.ui \
         mainwindow.ui
 
 # Default rules for deployment.

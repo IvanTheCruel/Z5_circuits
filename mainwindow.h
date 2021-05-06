@@ -5,6 +5,7 @@
 #include <QStandardItemModel>
 #include <cmath>
 #include <complex>
+#include "chart.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +29,8 @@ private slots:
     void test_slot(QModelIndex,QModelIndex,QVector<int>);
     void on_pushButton_2_clicked();
 
+    void on_pushButton_3_clicked();
+
 private:
     int N;
     double T;
@@ -38,6 +41,8 @@ private:
     Ui::MainWindow *ui;
     QStandardItemModel *model1;
     QModelIndex ind;
+    Chart ch;
+
 };
 
 #endif // MAINWINDOW_H

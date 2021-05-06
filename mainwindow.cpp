@@ -100,10 +100,12 @@ void MainWindow::test_slot(QModelIndex, QModelIndex, QVector<int>)
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    ui->pushButton_3->setEnabled(true);
+
     QVector<double> xn;
     for (int i = 0; i<N; i++){
         ind = model1->index(1,i);
-        xn.emplaceBack(ind.data().toDouble());
+        xn.push_back(ind.data().toDouble());
     }
 
 
@@ -113,7 +115,7 @@ void MainWindow::on_pushButton_2_clicked()
         for (int n = 0; n<N; n++){
            sum += xn[n]*exp(-2*M_PI*k*n/N*1i);
         }
-        Xn.emplaceBack(sum);
+        Xn.push_back(sum);
 
         ind = model1->index(2,k);
         model1->setData(ind, abs(Xn[k])/N);
@@ -124,4 +126,9 @@ void MainWindow::on_pushButton_2_clicked()
         ind = model1->index(4,k);
         model1->setData(ind, k*2*M_PI/T);
     }
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    ch.show();
 }
