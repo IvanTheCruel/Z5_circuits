@@ -31,7 +31,7 @@ void MainWindow::on_lineEdit_textChanged(const QString &arg1)
 void MainWindow::on_lineEdit_2_textChanged(const QString &arg1)
 {
     QString input = arg1;
-    //input.replace(",",".");
+    input.replace(".",",");
     int pos = 0;
     QDoubleValidator check(-1000, 400000, 1000, this);
 
