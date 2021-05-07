@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action, SIGNAL(triggered()), this, SLOT(fout()), Qt::DirectConnection);
     connect(ui->action_2, SIGNAL(triggered()), this, SLOT(fin()), Qt::DirectConnection);
     //    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
+
+    timer = new QTimer();
 }
 
 MainWindow::~MainWindow()
@@ -49,6 +51,7 @@ void MainWindow::on_lineEdit_2_textChanged(const QString &arg1)
 
 void MainWindow::on_pushButton_clicked()
 {
+    progresscheck(1);
     N = ui->lineEdit->text().toInt();
     T = ui->lineEdit_2->text().toDouble();
     model1 = new QStandardItemModel(5,N);
@@ -80,6 +83,7 @@ void MainWindow::on_pushButton_clicked()
     }
 
     connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_slot(QModelIndex,QModelIndex,QVector<int>)), Qt::DirectConnection);
+    progresscheck(0);
 }
 
 void MainWindow::test_slot(QModelIndex, QModelIndex, QVector<int>)
@@ -100,6 +104,7 @@ void MainWindow::test_slot(QModelIndex, QModelIndex, QVector<int>)
 
 void MainWindow::fout()
 {
+    progresscheck(1);
     //ui->pushButton_3->setEnabled(false);
     ofstream fout;
     fout.open("data.csv");
@@ -119,10 +124,11 @@ void MainWindow::fout()
         }
     }
     fout.close();
-
+    progresscheck(0);
 }
 
 void MainWindow::fin(){
+    progresscheck(1);
     ifstream fin("data.csv");
     QString input; string temp; //работают в тандеме
     int pos = 0;
@@ -171,6 +177,7 @@ void MainWindow::fin(){
         }
     }
     fin.close();
+    progresscheck(0);
 }
 
 
@@ -179,6 +186,8 @@ void MainWindow::fin(){
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    progresscheck(1);
+
     ui->pushButton_3->setEnabled(true);
 
     QVector<double> xn;
@@ -206,10 +215,12 @@ void MainWindow::on_pushButton_2_clicked()
         ind = model1->index(4,k);
         model1->setData(ind, k/T);
     }
+    progresscheck(0);
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    progresscheck(1);
     QVector<double> t, xn, A, psi, w;
     for (int i = 0; i<N; i++){
         ind = model1->index(0,i);
@@ -227,5 +238,22 @@ void MainWindow::on_pushButton_3_clicked()
     ch.show();
     ch.build(t,xn);
     ch.build_spectre(A,psi,w);
+    progresscheck(0);
+}
+void MainWindow::progresscheck(int state)
+{
+    if (state)
+    {
+        ui->textBrowser->setText("Выполняется...");
+    }else
+    {
+        ui->textBrowser->setText("Выполнено!");
+        timer->start(3000);
+        connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
+    }
+        QTime dieTime= QTime::currentTime().addMSecs(1);
+            while (QTime::currentTime() < dieTime)
+                QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
+
 
 }

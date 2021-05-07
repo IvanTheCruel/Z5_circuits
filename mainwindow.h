@@ -6,6 +6,8 @@
 #include "chart.h"
 #include <fstream>
 #include <QFile>
+#include <QTime>
+#include <QTimer>
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +38,8 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void progresscheck(int state);
+
 private:
     int N;
     double T;
@@ -47,6 +51,8 @@ private:
     QStandardItemModel *model1;
     QModelIndex ind;
     Chart ch;
+    QTimer *timer;
+
 };
 
 #endif // MAINWINDOW_H
