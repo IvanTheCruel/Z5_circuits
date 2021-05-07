@@ -93,7 +93,7 @@
             </font>
            </property>
            <property name="text">
-            <string>120</string>
+            <string>300</string>
            </property>
           </widget>
          </item>
@@ -105,7 +105,7 @@
             </font>
            </property>
            <property name="text">
-            <string>6.28318530</string>
+            <string>5</string>
            </property>
           </widget>
          </item>

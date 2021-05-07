@@ -84,18 +84,18 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
     pen.setColor(Qt::blue);
     for (int i=0; i<t.size()-1; i++){
         //xn
-        point.setX(100*t[i]);
+        point.setX(10+100*t[i]);
         point.setY(upper_y_border-100*xn[i]);
-        scene->addLine(point.x(), point.y(), 100*t[i+1], upper_y_border-100*xn[i+1], pen);
+        scene->addLine(point.x(), point.y(), 10+100*t[i+1], upper_y_border-100*xn[i+1], pen);
     }
 
-    QVector<double> temp = furie(t,A,psi,W);
+    //QVector<double> temp = furie(t,A,psi,W);
     pen.setColor(Qt::green);
     for (int i=0; i<t.size()-1; i++){
         //xn
-        point.setX(100*W[i]);
+        point.setX(10+W[i]);
         point.setY(upper_y_border-100*A[i]);
-        scene->addLine(point.x(), point.y(), 100*W[i+1], upper_y_border-100*A[i+1], pen);
+        scene->addLine(point.x(), point.y(), 10+W[i+1], upper_y_border-100*A[i+1], pen);
     }
 
 
