@@ -109,12 +109,7 @@ void Chart::build(QVector<double> t, QVector<double> xn)
         scene->addEllipse(point.x(),point.y(),1,1,pen,bruh);
     }
 
-    if(x_axis.length()>y_axis.length()){
-        scaling = 0.9*(589/x_axis.length());
-    }
-    else{
-        scaling = 0.9*(407/y_axis.length());
-    }
+    reset_scale();
 
     ui->graphicsView->scale(scaling,scaling);
 }
@@ -176,41 +171,20 @@ void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double
 
 void Chart::on_pushButton_clicked()
 {
+    window = true;
     ui->graphicsView->setScene(scene);
-    ui->graphicsView->scale(1/scaling,1/scaling);
-
-    if(x_axis.length()>y_axis.length()){
-        scaling = 0.9*(589/x_axis.length());
-    }
-    else{
-        scaling = 0.9*(407/y_axis.length());
-    }
-
-    ui->graphicsView->scale(scaling,scaling);
-
+    reset_scale();
 }
 
 void Chart::on_pushButton_2_clicked()
 {
+    window = false;
     ui->graphicsView->setScene(scene_1);
-    ui->graphicsView->scale(1/scaling,1/scaling);
-
-    if(x_axis_spectre.length()>y_axis_spectre.length()){
-        scaling = 0.9*(589/x_axis_spectre.length());
-    }
-    else{
-        scaling = 0.9*(407/y_axis_spectre.length());
-    }
-
-    ui->graphicsView->scale(scaling,scaling);
+    reset_scale();
 }
 
 void Chart::on_pushButton_3_clicked()
 {
-    //    QString fileName = "file_name.jpg";
-    //    QPixmap pixMap = ui->graphicsView->grab(ui->graphicsView->sceneRect().toRect());
-    //    pixMap.save(fileName);
-
     scene->setSceneRect(scene->itemsBoundingRect());
     QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
     image.fill(Qt::white);
@@ -236,12 +210,28 @@ void Chart::on_pushButton_4_clicked()
 
 void Chart::on_pushButton_5_clicked()
 {
-
     ui->graphicsView->scale(1.12,1.12);
 }
 
 void Chart::on_pushButton_6_clicked()
 {
+    reset_scale();
+}
+
+void Chart::reset_scale()
+{
     ui->graphicsView->resetTransform();
-    scaling = 1;
+//    ui->graphicsView->scale(1/scaling,1/scaling);
+    if (window)
+        scaling = 0.9*x_axis.length()>y_axis.length()? scaling = (589/x_axis.length()):scaling = (407/y_axis.length());
+    else
+        scaling = 0.9*x_axis_spectre.length()>y_axis_spectre.length()? scaling = (589/x_axis_spectre.length()):scaling = (407/y_axis_spectre.length());
+
+//    if(x_axis.length()>y_axis.length()){
+//        scaling = (589/x_axis.length());
+//    }
+//    else{
+//        scaling = (407/y_axis.length());
+//    }
+    ui->graphicsView->scale(scaling,scaling);
 }

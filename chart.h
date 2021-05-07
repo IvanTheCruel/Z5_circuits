@@ -37,6 +37,8 @@ private slots:
     void on_pushButton_6_clicked();
 
 private:
+    void reset_scale();
+    bool window = true;
     Ui::Chart *ui;
     QGraphicsView *view;
     QGraphicsScene *scene;
