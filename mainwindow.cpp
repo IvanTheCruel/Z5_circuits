@@ -68,8 +68,8 @@ void MainWindow::on_pushButton_clicked()
 
             //это надо так то задавать руками
             ind = model1->index(1,i);
-            model1->setData(ind, abs(cos(h*i)));
-            //model1->setData(ind, (sin(10*2*M_PI*h*i)+0.5*sin(5*2*M_PI*h*i)));
+            //model1->setData(ind, abs(cos(h*i)));
+            model1->setData(ind, (sin(10*2*M_PI*h*i)+0.5*sin(5*2*M_PI*h*i)));
         }
     } else {
         ui->pushButton->setText("Задать таблицу");
@@ -122,27 +122,6 @@ void MainWindow::fout()
 
 }
 
-/*
-std::ifstream& operator>>(std::ifstream& ifs, ITC::station& my_st){
-    string str;
-
-    getline(ifs, str, '|');//взяли id первого
-
-    getline(ifs, my_st.name, '|');//дали имя
-
-    getline(ifs, str, '|');//эффективность
-    my_st.efficiency=stoi(str);
-
-    getline(ifs, str, '|');//кол-во станций
-    my_st.quantity=stoi(str);
-
-    getline(ifs, str, '|');//кол-во станций в работе
-    my_st.quantity_in_work=stoi(str);
-
-    return ifs;
-}
-*/
-
 void MainWindow::fin(){
     ifstream fin("data.csv");
     QString input; string temp; //работают в тандеме
@@ -179,6 +158,10 @@ void MainWindow::fin(){
                 //ui->pushButton_2->setEnabled(false);
                 ui->lineEdit->setEnabled(false);
                 ui->lineEdit_2->setEnabled(false);
+                N = ui->lineEdit->text().toInt();
+                T = ui->lineEdit_2->text().toDouble();
+                model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ω"});
+
             }
             for (int i = 0; i<inputdata.size(); i++){
                 ind = model1->index(j,i);
