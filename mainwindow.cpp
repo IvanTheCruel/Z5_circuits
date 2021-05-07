@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->action, SIGNAL(triggered()), this, SLOT(fout()), Qt::DirectConnection);
     connect(ui->action_2, SIGNAL(triggered()), this, SLOT(fin()), Qt::DirectConnection);
+
     //    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
 
     timer = new QTimer();
@@ -32,7 +33,7 @@ void MainWindow::on_lineEdit_textChanged(const QString &arg1)
 {
     QString input = arg1;
     int pos = 0;
-    QIntValidator check(2, 400, this);
+    QIntValidator check(4, 40000, this);
 
     check_N = check.validate(input,pos) == 2; //0 1 2
     enable_button1();
@@ -43,7 +44,7 @@ void MainWindow::on_lineEdit_2_textChanged(const QString &arg1)
     QString input = arg1;
     input.replace(".",",");
     int pos = 0;
-    QDoubleValidator check(0, 400000, 1000, this);
+    QDoubleValidator check(0, 400000, 1000000, this);
 
     check_T = check.validate(input,pos) == 2; //0 1 2
     enable_button1();
@@ -60,7 +61,7 @@ void MainWindow::on_pushButton_clicked()
 
     if (ui->pushButton->text() == "Задать таблицу"){
         ui->pushButton->setText("Изменить таблицу");
-        //ui->pushButton_2->setEnabled(false);
+
         ui->lineEdit->setEnabled(false);
         ui->lineEdit_2->setEnabled(false);
 
@@ -72,21 +73,24 @@ void MainWindow::on_pushButton_clicked()
             //это надо так то задавать руками
             ind = model1->index(1,i);
             //model1->setData(ind, abs(cos(h*i)));
-            model1->setData(ind, (sin(10*2*M_PI*h*i)+0.5*sin(5*2*M_PI*h*i)));
+            //model1->setData(ind, (sin(10*2*M_PI*h*i)+0.5*sin(5*2*M_PI*h*i)));
         }
     } else {
         ui->pushButton->setText("Задать таблицу");
+        ui->pushButton_2->setEnabled(false);
+        ui->pushButton_3->setEnabled(false);
         ui->lineEdit->setEnabled(true);
         ui->lineEdit_2->setEnabled(true);
 
         model1->clear();
     }
 
-    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_slot(QModelIndex,QModelIndex,QVector<int>)), Qt::DirectConnection);
+    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_slot()), Qt::DirectConnection);
     progresscheck(0);
+   
 }
 
-void MainWindow::test_slot(QModelIndex, QModelIndex, QVector<int>)
+void MainWindow::test_slot()
 {
     QString input;
     int pos = 0;
@@ -118,7 +122,6 @@ void MainWindow::fout()
                 input = ind.data().toString();
                 input.replace(".",",");
                 fout << input.toStdString() << ';';
-
             }
             fout<< endl;
         }
@@ -139,7 +142,7 @@ void MainWindow::fin(){
         getline(fin, temp, ';');
         input = input.fromStdString(temp);
         input.replace(".",",");
-        for (int j = 0; j<5;j++){
+        for (int j = 0; j<2;j++){
             while (temp != "\n"){
                 if(check.validate(input, pos) && input!=""){
                     input.replace(",",".");
@@ -167,7 +170,7 @@ void MainWindow::fin(){
                 N = ui->lineEdit->text().toInt();
                 T = ui->lineEdit_2->text().toDouble();
                 model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
-
+                check_T = true; check_N = true;
             }
             for (int i = 0; i<inputdata.size(); i++){
                 ind = model1->index(j,i);
@@ -178,6 +181,7 @@ void MainWindow::fin(){
     }
     fin.close();
     progresscheck(0);
+    test_slot();
 }
 
 

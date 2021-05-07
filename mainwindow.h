@@ -28,7 +28,7 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void test_slot(QModelIndex,QModelIndex,QVector<int>);
+    void test_slot();
 
     void fout();
 
@@ -45,8 +45,8 @@ private:
     double T;
     void enable_button1();
     //лучше пусть будут фолс
-    bool check_N = true;
-    bool check_T = true;
+    bool check_N = false;
+    bool check_T = false;
     Ui::MainWindow *ui;
     QStandardItemModel *model1;
     QModelIndex ind;
