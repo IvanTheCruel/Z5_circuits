@@ -9,8 +9,8 @@ Chart::Chart(QWidget *parent) :
     setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
     scene = new QGraphicsScene();
     scene_1 = new QGraphicsScene();
-    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 }
 
@@ -40,6 +40,7 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     ui->graphicsView->setScene(scene);
     scene->clear();
     ui->graphicsView->scale(1/scaling,1/scaling);
+    QBrush bruh;
     QPen pen(Qt::DashLine);
     pen.setColor("orange");
     pen.setWidth(1);
@@ -97,19 +98,22 @@ void Chart::build(QVector<double> t, QVector<double> xn)
 
 
     /////////////////////////////////////
-    pen.setColor(Qt::blue);
+
     for (int i=0; i<t.size()-1; i++){
         //xn
         point.setX(10+100*t[i]);
         point.setY(upper_y_border-100*xn[i]);
+        pen.setColor(Qt::gray);
         scene->addLine(point.x(), point.y(), 10+100*t[i+1], upper_y_border-100*xn[i+1], pen);
+        pen.setColor(Qt::blue);
+        scene->addEllipse(point.x(),point.y(),1,1,pen,bruh);
     }
 
     if(x_axis.length()>y_axis.length()){
-        scaling = 589/x_axis.length();
+        scaling = 0.9*(589/x_axis.length());
     }
     else{
-        scaling = 407/y_axis.length();
+        scaling = 0.9*(407/y_axis.length());
     }
 
     ui->graphicsView->scale(scaling,scaling);
@@ -176,10 +180,10 @@ void Chart::on_pushButton_clicked()
     ui->graphicsView->scale(1/scaling,1/scaling);
 
     if(x_axis.length()>y_axis.length()){
-        scaling = 589/x_axis.length();
+        scaling = 0.9*(589/x_axis.length());
     }
     else{
-        scaling = 407/y_axis.length();
+        scaling = 0.9*(407/y_axis.length());
     }
 
     ui->graphicsView->scale(scaling,scaling);
@@ -192,10 +196,10 @@ void Chart::on_pushButton_2_clicked()
     ui->graphicsView->scale(1/scaling,1/scaling);
 
     if(x_axis_spectre.length()>y_axis_spectre.length()){
-        scaling = 589/x_axis_spectre.length();
+        scaling = 0.9*(589/x_axis_spectre.length());
     }
     else{
-        scaling = 407/y_axis_spectre.length();
+        scaling = 0.9*(407/y_axis_spectre.length());
     }
 
     ui->graphicsView->scale(scaling,scaling);
@@ -203,9 +207,9 @@ void Chart::on_pushButton_2_clicked()
 
 void Chart::on_pushButton_3_clicked()
 {
-//    QString fileName = "file_name.jpg";
-//    QPixmap pixMap = ui->graphicsView->grab(ui->graphicsView->sceneRect().toRect());
-//    pixMap.save(fileName);
+    //    QString fileName = "file_name.jpg";
+    //    QPixmap pixMap = ui->graphicsView->grab(ui->graphicsView->sceneRect().toRect());
+    //    pixMap.save(fileName);
 
     scene->setSceneRect(scene->itemsBoundingRect());
     QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
@@ -223,4 +227,21 @@ void Chart::on_pushButton_3_clicked()
     scene_1->render(&painter_1);
     image_1.save("спектр.jpg");
 
+}
+
+void Chart::on_pushButton_4_clicked()
+{
+    ui->graphicsView->scale(0.9,0.9);
+}
+
+void Chart::on_pushButton_5_clicked()
+{
+
+    ui->graphicsView->scale(1.12,1.12);
+}
+
+void Chart::on_pushButton_6_clicked()
+{
+    ui->graphicsView->resetTransform();
+    scaling = 1;
 }
