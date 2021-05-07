@@ -39,7 +39,7 @@ void Chart::build(QVector<double> t, QVector<double> xn)
 {
     ui->graphicsView->setScene(scene);
     scene->clear();
-    ui->graphicsView->scale(1/scaling,1/scaling);
+    //ui->graphicsView->scale(1/scaling,1/scaling);
     QBrush bruh;
     QPen pen(Qt::DashLine);
     pen.setColor("orange");
@@ -72,6 +72,8 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     }
 
 
+
+
     pen.setWidth(2);
 
 
@@ -96,6 +98,21 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     text->setPos(upper_x_border-20, upper_y_border - 20);
     text->setDefaultTextColor(Qt::black);
 
+    //цена деления
+    QString hor = "Цен. дел. - верт. : ";
+    QString hor_num;
+    //hor_num.setNum();
+
+
+    QString vert =  " гориз. : ";
+    QString ver_num;
+
+    text = scene->addText(hor+vert,font);
+    text->setPos(50, 10);
+    text->setDefaultTextColor(Qt::black);
+
+
+
 
     /////////////////////////////////////
 
@@ -111,7 +128,7 @@ void Chart::build(QVector<double> t, QVector<double> xn)
 
     reset_scale();
 
-    ui->graphicsView->scale(scaling,scaling);
+   //ui->graphicsView->scale(scaling,scaling);
 }
 
 void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double> W)
@@ -129,7 +146,7 @@ void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double
         scene_1->addLine(10+i*10, 0, 10+i*10, upper_y_border, pen);
     }
 
-    for (int i = 0; i < (upper_y_border)/10; i++){
+    for (int i = 0; i <= (upper_y_border)/10; i++){
         scene_1->addLine(0, 10+i*10, upper_x_border, 10+i*10, pen);
     }
 
@@ -167,6 +184,7 @@ void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double
         point.setY(upper_y_border-100*A[i]);
         scene_1->addLine(point.x(), point.y(), 10+10*W[i+1], upper_y_border-100*A[i+1], pen);
     }
+    reset_scale();
 }
 
 void Chart::on_pushButton_clicked()
@@ -222,9 +240,10 @@ void Chart::reset_scale()
 {
     ui->graphicsView->resetTransform();
     if (window)
-        scaling = x_axis.length()>y_axis.length()? scaling = (589/x_axis.length()):scaling = (407/y_axis.length());
+        scaling = x_axis.length()>y_axis.length()?589/x_axis.length():407/y_axis.length();
     else
-        scaling = x_axis_spectre.length()>y_axis_spectre.length()? scaling = (589/x_axis_spectre.length()):scaling = (407/y_axis_spectre.length());
+        scaling = x_axis_spectre.length()>y_axis_spectre.length()?589/x_axis_spectre.length():407/y_axis_spectre.length();
 
-    ui->graphicsView->scale(scaling*0.9,scaling*0.9);
+
+    ui->graphicsView->scale(0.95*scaling,0.95*scaling);
 }
