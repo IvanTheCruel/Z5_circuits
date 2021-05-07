@@ -93,7 +93,7 @@
             </font>
            </property>
            <property name="text">
-            <string>12</string>
+            <string>120</string>
            </property>
           </widget>
          </item>
@@ -159,7 +159,7 @@
      <x>0</x>
      <y>0</y>
      <width>796</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

@@ -25,6 +25,7 @@ private:
     Ui::Chart *ui;
     QGraphicsView *view;
     QGraphicsScene *scene;
+    double scaling=1;
 };
 
 #endif // CHART_H

@@ -35,6 +35,8 @@ QVector<double> furie(QVector<double> t, QVector<double> A, QVector<double> psi,
 void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVector<double> psi, QVector<double> W)
 {
     ui->graphicsView->setScene(scene);
+    scene->clear();
+    ui->graphicsView->scale(1/scaling,1/scaling);
     QPen pen(Qt::DashLine);
     pen.setColor("orange");
     pen.setWidth(1);
@@ -73,6 +75,7 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
 
 
     QLineF x_axis(0, upper_y_border, upper_x_border, upper_y_border);
+    QLineF y_axis(10, 0, 10, upper_y_border+lower_y_border);
     scene->addLine(10, 0, 10, upper_y_border+lower_y_border, pen);
     scene->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
 
@@ -87,7 +90,7 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
     }
 
     QVector<double> temp = furie(t,A,psi,W);
-
+    pen.setColor(Qt::green);
     for (int i=0; i<t.size()-1; i++){
         //xn
         point.setX(100*W[i]);
@@ -96,8 +99,12 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
     }
 
 
-    double scaling = 589/x_axis.length();
-
+    if(x_axis.length()>y_axis.length()){
+        scaling = 589/x_axis.length();
+    }
+    else{
+        scaling = 407/y_axis.length();
+    }
 
     ui->graphicsView->scale(scaling,scaling);
 }
