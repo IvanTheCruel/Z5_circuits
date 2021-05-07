@@ -53,7 +53,7 @@ void MainWindow::on_pushButton_clicked()
     T = ui->lineEdit_2->text().toDouble();
     model1 = new QStandardItemModel(5,N);
     ui->tableView->setModel(model1);
-    model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ω"});
+    model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
 
     if (ui->pushButton->text() == "Задать таблицу"){
         ui->pushButton->setText("Изменить таблицу");
@@ -160,7 +160,7 @@ void MainWindow::fin(){
                 ui->lineEdit_2->setEnabled(false);
                 N = ui->lineEdit->text().toInt();
                 T = ui->lineEdit_2->text().toDouble();
-                model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ω"});
+                model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
 
             }
             for (int i = 0; i<inputdata.size(); i++){
@@ -226,6 +226,6 @@ void MainWindow::on_pushButton_3_clicked()
 
     ch.show();
     ch.build(t,xn);
-    ch.build_1(A,psi,w);
+    ch.build_spectre(A,psi,w);
 
 }

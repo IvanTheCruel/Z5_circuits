@@ -9,6 +9,8 @@ Chart::Chart(QWidget *parent) :
     setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
     scene = new QGraphicsScene();
     scene_1 = new QGraphicsScene();
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 }
 
@@ -58,6 +60,7 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     //    for(int i = 0; i < 100; i++)
     //        points.append(QPointF((i+2)*5, 250+50*sin((i+2)*50)));
 
+    //рыжае
 
     for (int i = 0; i < upper_x_border/10; i++){
         scene->addLine(10+i*10, 0, 10+i*10, upper_y_border+lower_y_border, pen);
@@ -74,11 +77,23 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     pen.setColor(Qt::black);
     pen.setStyle(Qt::SolidLine);
 
-
+    //чорнае
     x_axis = QLineF(0, upper_y_border, upper_x_border, upper_y_border);
     y_axis = QLineF(10, 0, 10, upper_y_border+lower_y_border);
     scene->addLine(10, 0, 10, upper_y_border+lower_y_border, pen);
     scene->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
+    //подписи осей
+    QFont font;
+    font.setBold(true); font.setFamily("Times");
+    QGraphicsTextItem *text;
+
+    text = scene->addText("a(t)",font);
+    text->setPos(10, 0);
+    text->setDefaultTextColor(Qt::black);
+
+    text = scene->addText("t",font);
+    text->setPos(upper_x_border-20, upper_y_border - 20);
+    text->setDefaultTextColor(Qt::black);
 
 
     /////////////////////////////////////
@@ -100,7 +115,7 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     ui->graphicsView->scale(scaling,scaling);
 }
 
-void Chart::build_1(QVector<double> A, QVector<double> psi, QVector<double> W)
+void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double> W)
 {
     scene_1->clear();
     QPen pen(Qt::DashLine);
@@ -110,7 +125,7 @@ void Chart::build_1(QVector<double> A, QVector<double> psi, QVector<double> W)
     double upper_y_border = 50 + 100 * *std::max_element(A.begin(), A.end());
     double upper_x_border = 50 + 10 * (*std::max_element(W.begin(), W.end())/2);
 
-
+    //рыжае
     for (int i = 0; i < upper_x_border/10; i++){
         scene_1->addLine(10+i*10, 0, 10+i*10, upper_y_border, pen);
     }
@@ -126,12 +141,24 @@ void Chart::build_1(QVector<double> A, QVector<double> psi, QVector<double> W)
     pen.setColor(Qt::black);
     pen.setStyle(Qt::SolidLine);
 
-
-    x_axis_1 = QLineF(0, upper_y_border, upper_x_border, upper_y_border);
-    y_axis_1 = QLineF(10, 0, 10, upper_y_border);
+    //чорнае
+    x_axis_spectre = QLineF(0, upper_y_border, upper_x_border, upper_y_border);
+    y_axis_spectre = QLineF(10, 0, 10, upper_y_border);
     scene_1->addLine(10, 0, 10, upper_y_border, pen);
     scene_1->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
 
+    //подписи осей
+    QFont font;
+    font.setBold(true); font.setFamily("Times");
+    QGraphicsTextItem *text;
+
+    text = scene_1->addText("A(ν)",font);
+    text->setPos(10, 0);
+    text->setDefaultTextColor(Qt::black);
+
+    text = scene_1->addText("ν",font);
+    text->setPos(upper_x_border-20, upper_y_border - 20);
+    text->setDefaultTextColor(Qt::black);
 
 
     pen.setColor(Qt::green);
@@ -164,12 +191,36 @@ void Chart::on_pushButton_2_clicked()
     ui->graphicsView->setScene(scene_1);
     ui->graphicsView->scale(1/scaling,1/scaling);
 
-    if(x_axis_1.length()>y_axis_1.length()){
-        scaling = 589/x_axis_1.length();
+    if(x_axis_spectre.length()>y_axis_spectre.length()){
+        scaling = 589/x_axis_spectre.length();
     }
     else{
-        scaling = 407/y_axis_1.length();
+        scaling = 407/y_axis_spectre.length();
     }
 
     ui->graphicsView->scale(scaling,scaling);
+}
+
+void Chart::on_pushButton_3_clicked()
+{
+//    QString fileName = "file_name.jpg";
+//    QPixmap pixMap = ui->graphicsView->grab(ui->graphicsView->sceneRect().toRect());
+//    pixMap.save(fileName);
+
+    scene->setSceneRect(scene->itemsBoundingRect());
+    QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
+    image.fill(Qt::white);
+
+    QPainter painter(&image);
+    scene->render(&painter);
+    image.save("исходный_график.jpg");
+
+    scene_1->setSceneRect(scene_1->itemsBoundingRect());
+    QImage image_1(scene_1->sceneRect().size().toSize(), QImage::Format_ARGB32);
+    image_1.fill(Qt::white);
+
+    QPainter painter_1(&image_1);
+    scene_1->render(&painter_1);
+    image_1.save("спектр.jpg");
+
 }

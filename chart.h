@@ -7,6 +7,7 @@
 #include <complex>
 #include <cmath>
 #include <algorithm>
+#include <QGraphicsTextItem>
 
 namespace Ui {
 class Chart;
@@ -21,11 +22,13 @@ public:
 
     ~Chart();
     void build(QVector<double>, QVector<double>);
-    void build_1(QVector<double> A, QVector<double> psi, QVector<double> W);
+    void build_spectre(QVector<double> A, QVector<double> psi, QVector<double> W);
 private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
 
 private:
     Ui::Chart *ui;
@@ -35,8 +38,8 @@ private:
     double scaling=1;
     QLineF x_axis = QLineF(0,0,0,0);
     QLineF y_axis = QLineF(0,0,0,0);
-    QLineF x_axis_1 = QLineF(0,0,0,0);
-    QLineF y_axis_1 = QLineF(0,0,0,0);
+    QLineF x_axis_spectre = QLineF(0,0,0,0);
+    QLineF y_axis_spectre = QLineF(0,0,0,0);
 };
 
 #endif // CHART_H
