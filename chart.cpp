@@ -8,6 +8,7 @@ Chart::Chart(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
     scene = new QGraphicsScene();
+    scene_1 = new QGraphicsScene();
 
 }
 
@@ -32,7 +33,7 @@ QVector<double> furie(QVector<double> t, QVector<double> A, QVector<double> psi,
     return temp;
 }
 
-void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVector<double> psi, QVector<double> W)
+void Chart::build(QVector<double> t, QVector<double> xn)
 {
     ui->graphicsView->setScene(scene);
     scene->clear();
@@ -74,8 +75,8 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
     pen.setStyle(Qt::SolidLine);
 
 
-    QLineF x_axis(0, upper_y_border, upper_x_border, upper_y_border);
-    QLineF y_axis(10, 0, 10, upper_y_border+lower_y_border);
+    x_axis = QLineF(0, upper_y_border, upper_x_border, upper_y_border);
+    y_axis = QLineF(10, 0, 10, upper_y_border+lower_y_border);
     scene->addLine(10, 0, 10, upper_y_border+lower_y_border, pen);
     scene->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
 
@@ -84,26 +85,90 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
     pen.setColor(Qt::blue);
     for (int i=0; i<t.size()-1; i++){
         //xn
-        point.setX(100*t[i]);
+        point.setX(10+100*t[i]);
         point.setY(upper_y_border-100*xn[i]);
-        scene->addLine(point.x(), point.y(), 100*t[i+1], upper_y_border-100*xn[i+1], pen);
+        scene->addLine(point.x(), point.y(), 10+100*t[i+1], upper_y_border-100*xn[i+1], pen);
     }
-
-    QVector<double> temp = furie(t,A,psi,W);
-    pen.setColor(Qt::green);
-    for (int i=0; i<t.size()-1; i++){
-        //xn
-        point.setX(100*W[i]);
-        point.setY(upper_y_border-100*A[i]);
-        scene->addLine(point.x(), point.y(), 100*W[i+1], upper_y_border-100*A[i+1], pen);
-    }
-
 
     if(x_axis.length()>y_axis.length()){
         scaling = 589/x_axis.length();
     }
     else{
         scaling = 407/y_axis.length();
+    }
+
+    ui->graphicsView->scale(scaling,scaling);
+}
+
+void Chart::build_1(QVector<double> A, QVector<double> psi, QVector<double> W)
+{
+    scene_1->clear();
+    QPen pen(Qt::DashLine);
+    pen.setColor("orange");
+    pen.setWidth(1);
+    QPointF point;
+    double upper_y_border = 50 + 100 * *std::max_element(A.begin(), A.end());
+    double upper_x_border = 50 + 10 * (*std::max_element(W.begin(), W.end())/2);
+
+
+    for (int i = 0; i < upper_x_border/10; i++){
+        scene_1->addLine(10+i*10, 0, 10+i*10, upper_y_border, pen);
+    }
+
+    for (int i = 0; i < (upper_y_border)/10; i++){
+        scene_1->addLine(0, 10+i*10, upper_x_border, 10+i*10, pen);
+    }
+
+
+    pen.setWidth(2);
+
+
+    pen.setColor(Qt::black);
+    pen.setStyle(Qt::SolidLine);
+
+
+    x_axis_1 = QLineF(0, upper_y_border, upper_x_border, upper_y_border);
+    y_axis_1 = QLineF(10, 0, 10, upper_y_border);
+    scene_1->addLine(10, 0, 10, upper_y_border, pen);
+    scene_1->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
+
+
+
+    pen.setColor(Qt::green);
+    for (int i=0; i<W.size()/2-1; i++){
+        //xn
+        point.setX(10+10*W[i]);
+        point.setY(upper_y_border-100*A[i]);
+        scene_1->addLine(point.x(), point.y(), 10+10*W[i+1], upper_y_border-100*A[i+1], pen);
+    }
+}
+
+void Chart::on_pushButton_clicked()
+{
+    ui->graphicsView->setScene(scene);
+    ui->graphicsView->scale(1/scaling,1/scaling);
+
+    if(x_axis.length()>y_axis.length()){
+        scaling = 589/x_axis.length();
+    }
+    else{
+        scaling = 407/y_axis.length();
+    }
+
+    ui->graphicsView->scale(scaling,scaling);
+
+}
+
+void Chart::on_pushButton_2_clicked()
+{
+    ui->graphicsView->setScene(scene_1);
+    ui->graphicsView->scale(1/scaling,1/scaling);
+
+    if(x_axis_1.length()>y_axis_1.length()){
+        scaling = 589/x_axis_1.length();
+    }
+    else{
+        scaling = 407/y_axis_1.length();
     }
 
     ui->graphicsView->scale(scaling,scaling);
