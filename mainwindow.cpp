@@ -56,6 +56,7 @@ void MainWindow::on_pushButton_clicked()
     N = ui->lineEdit->text().toInt();
     T = ui->lineEdit_2->text().toDouble();
     model1 = new QStandardItemModel(5,N);
+    model_empty = false;
     ui->tableView->setModel(model1);
     model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
 
@@ -83,6 +84,7 @@ void MainWindow::on_pushButton_clicked()
         ui->lineEdit_2->setEnabled(true);
 
         model1->clear();
+        model_empty = true;
     }
 
     connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_slot()), Qt::DirectConnection);
@@ -117,7 +119,7 @@ void MainWindow::fout()
     QVector<double> t, xn, A, psi, w;
     QString input;
 
-    if (fout.is_open()){
+    if (fout.is_open() && !model_empty){
         for (int j = 0; j<5;j++){
             for (int i = 0; i<N; i++){
                 ind = model1->index(j,i);
@@ -146,10 +148,16 @@ void MainWindow::fin(){
 
     if (fin.is_open()){
         getline(fin, temp, ';');
+        if(temp == "")
+        {
+            fin.close();
+            progresscheck(0);
+            return;
+        }
         input = input.fromStdString(temp);
         input.replace(".",",");
         for (int j = 0; j<2;j++){
-            while (temp != "\n"){
+            while (temp != "\n" && !(temp == "")){
                 if(check.validate(input, pos) && input!=""){
                     input.replace(",",".");
                     inputdata.push_back(input.toDouble());
@@ -190,6 +198,7 @@ void MainWindow::fin(){
 void MainWindow::costil(QVector<double> &inputdata)
 {
     model1 = new QStandardItemModel(5,inputdata.size());
+    model_empty = false;
     ui->tableView->setModel(model1);
     ui->lineEdit->setText(QString::number(inputdata.size()));
     ui->lineEdit_2->setText(QString::number(inputdata[inputdata.size()-1]));

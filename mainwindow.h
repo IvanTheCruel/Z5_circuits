@@ -59,6 +59,7 @@ private:
     Chart ch;
     help he;
     QTimer *timer;
+    bool model_empty = true;
 
 };
 
