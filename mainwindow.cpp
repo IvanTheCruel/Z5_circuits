@@ -111,7 +111,9 @@ void MainWindow::fout()
     progresscheck(1);
     //ui->pushButton_3->setEnabled(false);
     ofstream fout;
-    fout.open("data.csv");
+    QString path = QFileDialog::getSaveFileName(0, "Open Dialog", "", "*.csv");
+    std::string path_1 = path.toLocal8Bit().constData();
+    fout.open(path_1);
     QVector<double> t, xn, A, psi, w;
     QString input;
 
@@ -134,7 +136,9 @@ void MainWindow::fout()
 
 void MainWindow::fin(){
     progresscheck(1);
-    ifstream fin("data.csv");
+    QString path = QFileDialog::getOpenFileName(0, "Open Dialog", "", "*.csv");
+    std::string path_1 = path.toLocal8Bit().constData();
+    ifstream fin(path_1);
     QString input; string temp; //работают в тандеме
     int pos = 0;
     QDoubleValidator check(-4000000, 4000000, 10000000, this);
@@ -288,4 +292,6 @@ void MainWindow::progresscheck(int state)
 
 
 }
+
+
 

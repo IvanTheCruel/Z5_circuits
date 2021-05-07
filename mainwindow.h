@@ -9,6 +9,8 @@
 #include <QFile>
 #include <QTime>
 #include <QTimer>
+#include <QFileDialog>
+#include <string>
 
 namespace Ui {
 class MainWindow;
