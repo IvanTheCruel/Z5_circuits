@@ -26,15 +26,18 @@ CONFIG += c++11
 
 SOURCES += \
     chart.cpp \
+    help.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
     chart.h \
+    help.h \
         mainwindow.h
 
 FORMS += \
         chart.ui \
+        help.ui \
         mainwindow.ui
 
 # Default rules for deployment.
