@@ -102,12 +102,15 @@ void MainWindow::test()
     ofstream fout;
     fout.open("data.csv");
     QVector<double> t, xn, A, psi, w;
+    QString input;
 
     if (fout.is_open()){
         for (int j = 0; j<5;j++){
             for (int i = 0; i<N; i++){
                 ind = model1->index(j,i);
-                fout << ind.data().toDouble() << ';';
+                input = ind.data().toString();
+                input.replace(".",",");
+                fout << input.toStdString() << ';';
 
             }
             fout<< endl;
