@@ -11,7 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //fuck off
     enable_button1();
 
-    connect(ui->action, SIGNAL(triggered()), this, SLOT(test()), Qt::DirectConnection);
+    connect(ui->action, SIGNAL(triggered()), this, SLOT(fout()), Qt::DirectConnection);
+    connect(ui->action_2, SIGNAL(triggered()), this, SLOT(fin()), Qt::DirectConnection);
     //    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
 }
 
@@ -97,7 +98,7 @@ void MainWindow::test_slot(QModelIndex, QModelIndex, QVector<int>)
     ui->pushButton_2->setEnabled(temp);
 }
 
-void MainWindow::test()
+void MainWindow::fout()
 {
     //ui->pushButton_3->setEnabled(false);
     ofstream fout;
@@ -119,6 +120,74 @@ void MainWindow::test()
     }
     fout.close();
 
+}
+
+/*
+std::ifstream& operator>>(std::ifstream& ifs, ITC::station& my_st){
+    string str;
+
+    getline(ifs, str, '|');//взяли id первого
+
+    getline(ifs, my_st.name, '|');//дали имя
+
+    getline(ifs, str, '|');//эффективность
+    my_st.efficiency=stoi(str);
+
+    getline(ifs, str, '|');//кол-во станций
+    my_st.quantity=stoi(str);
+
+    getline(ifs, str, '|');//кол-во станций в работе
+    my_st.quantity_in_work=stoi(str);
+
+    return ifs;
+}
+*/
+
+void MainWindow::fin(){
+    ifstream fin("data.csv");
+    QString input; string temp; //работают в тандеме
+    int pos = 0;
+    QDoubleValidator check(-4000000, 4000000, 10000000, this);
+    QVector<double> inputdata;
+
+    if (fin.is_open()){
+        getline(fin, temp, ';');
+        input = input.fromStdString(temp);
+        input.replace(".",",");
+        for (int j = 0; j<5;j++){
+            while (temp != "\n"){
+                if(check.validate(input, pos) && input!=""){
+                    input.replace(",",".");
+                    inputdata.push_back(input.toDouble());
+                }
+                getline(fin, temp, ';');
+                if (temp.find("\n") != std::string::npos) {
+                    input = input.fromStdString(temp);
+                    input.replace("\n","");
+                    input.replace(".",",");
+                    break;
+                }
+                input = input.fromStdString(temp);
+                input.replace(".",",");
+            }
+            if(j==0){
+                model1 = new QStandardItemModel(5,inputdata.size());
+                ui->tableView->setModel(model1);
+                ui->lineEdit->setText(QString::number(inputdata.size()));
+                ui->lineEdit_2->setText(QString::number(inputdata[inputdata.size()-1]));
+                ui->pushButton->setText("Изменить таблицу");
+                //ui->pushButton_2->setEnabled(false);
+                ui->lineEdit->setEnabled(false);
+                ui->lineEdit_2->setEnabled(false);
+            }
+            for (int i = 0; i<inputdata.size(); i++){
+                ind = model1->index(j,i);
+                model1->setData(ind, inputdata[i]);
+            }
+            inputdata.clear();
+        }
+    }
+    fin.close();
 }
 
 

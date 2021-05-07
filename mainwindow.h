@@ -5,6 +5,7 @@
 #include <QStandardItemModel>
 #include "chart.h"
 #include <fstream>
+#include <QFile>
 
 namespace Ui {
 class MainWindow;
@@ -27,7 +28,9 @@ private slots:
 
     void test_slot(QModelIndex,QModelIndex,QVector<int>);
 
-    void test();
+    void fout();
+
+    void fin();
 
     void on_pushButton_2_clicked();
 
