@@ -6,6 +6,8 @@
 #include "chart.h"
 #include <fstream>
 #include <QFile>
+#include <QTime>
+#include <QTimer>
 
 namespace Ui {
 class MainWindow;
@@ -26,7 +28,7 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void test_slot(QModelIndex,QModelIndex,QVector<int>);
+    void test_slot();
 
     void fout();
 
@@ -36,17 +38,21 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void progresscheck(int state);
+
 private:
     int N;
     double T;
     void enable_button1();
     //лучше пусть будут фолс
-    bool check_N = true;
-    bool check_T = true;
+    bool check_N = false;
+    bool check_T = false;
     Ui::MainWindow *ui;
     QStandardItemModel *model1;
     QModelIndex ind;
     Chart ch;
+    QTimer *timer;
+
 };
 
 #endif // MAINWINDOW_H

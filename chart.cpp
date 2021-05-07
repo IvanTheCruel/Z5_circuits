@@ -242,8 +242,10 @@ void Chart::reset_scale()
     if (window)
         scaling = x_axis.length()>y_axis.length()?589/x_axis.length():407/y_axis.length();
     else
+
         scaling = x_axis_spectre.length()>y_axis_spectre.length()?589/x_axis_spectre.length():407/y_axis_spectre.length();
 
 
     ui->graphicsView->scale(0.95*scaling,0.95*scaling);
+
 }
