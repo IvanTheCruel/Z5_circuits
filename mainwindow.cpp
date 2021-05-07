@@ -173,5 +173,7 @@ void MainWindow::on_pushButton_3_clicked()
     }
 
     ch.show();
-    ch.build(t,xn,A,psi,w);
+    ch.build(t,xn);
+    ch.build_1(A,psi,w);
+
 }
