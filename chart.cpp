@@ -16,6 +16,22 @@ Chart::~Chart()
     delete ui;
 }
 
+QVector<double> furie(QVector<double> t, QVector<double> A, QVector<double> psi, QVector<double> W){
+    QVector<double> temp;
+    int i = 0;
+    double sum = 0;
+    for (int Tx = 0; Tx<t.size(); Tx++){
+        temp.push_back(0);
+        sum+=A[0];
+        for (i = 1; i<t.size(); i++){
+            sum+=A[i]*sin(i*W[i]*t[Tx]+psi[i]);
+        }
+        temp[Tx]=sum;
+        sum=0;
+    }
+    return temp;
+}
+
 void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVector<double> psi, QVector<double> W)
 {
     ui->graphicsView->setScene(scene);
@@ -70,6 +86,18 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
         scene->addLine(point.x(), point.y(), 100*t[i+1], upper_y_border-100*xn[i+1], pen);
     }
 
+    QVector<double> temp = furie(t,A,psi,W);
+
+    for (int i=0; i<t.size()-1; i++){
+        //xn
+        point.setX(100*t[i]);
+        point.setY(upper_y_border-100*temp[i]);
+        scene->addLine(point.x(), point.y(), 100*t[i+1], upper_y_border-100*temp[i+1], pen);
+    }
+
+
     double scaling = 589/x_axis.length();
+
+
     ui->graphicsView->scale(scaling,scaling);
 }
