@@ -39,50 +39,49 @@ void Chart::build(QVector<double> t, QVector<double> xn)
 {
     ui->graphicsView->setScene(scene);
     scene->clear();
-    ui->graphicsView->scale(1/scaling,1/scaling);
+    //ui->graphicsView->scale(1/scaling,1/scaling);
     QBrush bruh;
-    QPen pen(Qt::DashLine);
+    QPen pen;
+    /*(Qt::DashLine);
     pen.setColor("orange");
-    pen.setWidth(1);
+    pen.setWidth(1);*/
     QPointF point;
     double upper_y_border = 50 + 100 * *std::max_element(xn.begin(), xn.end());
     double upper_x_border = 50 + 100 * *std::max_element(t.begin(), t.end());
     double lower_y_border;
-    if(*std::min_element(xn.begin(), xn.end()) < 0){
+
+    if(*std::min_element(xn.begin(), xn.end()) < 0)
         lower_y_border = 50  - 100 * *std::min_element(xn.begin(), xn.end());
-    }
-    else{
-        lower_y_border = 50;
-    }
+    else lower_y_border = 50;
 
-    //////////////////////////////////////
-
-    //пример
-    //    for(int i = 0; i < 100; i++)
-    //        points.append(QPointF((i+2)*5, 250+50*sin((i+2)*50)));
 
     //рыжае
+    pen.setStyle(Qt::DashLine);
+    pen.setColor("orange");
+    pen.setWidth(1);
 
-    for (int i = 0; i < upper_x_border/10; i++){
+    for (int i = 0; i < upper_x_border/10; i++)
         scene->addLine(10+i*10, 0, 10+i*10, upper_y_border+lower_y_border, pen);
+    //scene->addLine(10, 0, 10, upper_y_border+lower_y_border, pen);
+
+    for (int i = 0; i < (upper_y_border+lower_y_border)/20; i++){
+        scene->addLine(0, upper_y_border-i*10, upper_x_border, upper_y_border-i*10, pen);
+        scene->addLine(0, upper_y_border+i*10, upper_x_border, upper_y_border+i*10, pen);
     }
-
-    for (int i = 0; i < (upper_y_border+lower_y_border)/10; i++){
-        scene->addLine(0, 10+i*10, upper_x_border, 10+i*10, pen);
-    }
+    //scene->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
 
 
+
+    //чорнае
     pen.setWidth(2);
-
-
     pen.setColor(Qt::black);
     pen.setStyle(Qt::SolidLine);
 
-    //чорнае
     x_axis = QLineF(0, upper_y_border, upper_x_border, upper_y_border);
     y_axis = QLineF(10, 0, 10, upper_y_border+lower_y_border);
     scene->addLine(10, 0, 10, upper_y_border+lower_y_border, pen);
     scene->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
+
     //подписи осей
     QFont font;
     font.setBold(true); font.setFamily("Times");
@@ -96,6 +95,17 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     text->setPos(upper_x_border-20, upper_y_border - 20);
     text->setDefaultTextColor(Qt::black);
 
+    //цена деления
+    QString hor = "Цен. дел. - верт. : ";
+    QString hor_num;
+    //hor_num.setNum();
+
+    QString vert =  " гориз. : ";
+    QString ver_num;
+
+    text = scene->addText(hor+vert,font);
+    text->setPos(50, 10);
+    text->setDefaultTextColor(Qt::black);
 
     /////////////////////////////////////
 
@@ -110,43 +120,48 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     }
 
     reset_scale();
-
-    ui->graphicsView->scale(scaling,scaling);
+   //ui->graphicsView->scale(scaling,scaling);
 }
 
 void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double> W)
 {
     scene_1->clear();
-    QPen pen(Qt::DashLine);
-    pen.setColor("orange");
-    pen.setWidth(1);
+    QPen pen;
+//    QPen pen(Qt::DashLine);
+//    pen.setColor("orange");
+//    pen.setWidth(1);
     QPointF point;
     double upper_y_border = 50 + 100 * *std::max_element(A.begin(), A.end());
     double upper_x_border = 50 + 10 * (*std::max_element(W.begin(), W.end())/2);
 
     //рыжае
-    for (int i = 0; i < upper_x_border/10; i++){
+    pen.setStyle(Qt::DashLine);
+    pen.setColor("orange");
+    pen.setWidth(1);
+
+    for (int i = 0; i < upper_x_border/10; i++)
         scene_1->addLine(10+i*10, 0, 10+i*10, upper_y_border, pen);
-    }
 
-    for (int i = 0; i < (upper_y_border)/10; i++){
-        scene_1->addLine(0, 10+i*10, upper_x_border, 10+i*10, pen);
-    }
+    for (int i = 0; i <= (upper_y_border)/10; i++)
+        scene_1->addLine(0, upper_y_border-i*10, upper_x_border, upper_y_border-i*10, pen);
 
-
+    //чорнае
     pen.setWidth(2);
-
-
     pen.setColor(Qt::black);
     pen.setStyle(Qt::SolidLine);
 
-    //чорнае
     x_axis_spectre = QLineF(0, upper_y_border, upper_x_border, upper_y_border);
     y_axis_spectre = QLineF(10, 0, 10, upper_y_border);
     scene_1->addLine(10, 0, 10, upper_y_border, pen);
     scene_1->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
 
+
+
+
     //подписи осей
+    pen.setColor(Qt::black);
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(2);
     QFont font;
     font.setBold(true); font.setFamily("Times");
     QGraphicsTextItem *text;
@@ -167,6 +182,7 @@ void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double
         point.setY(upper_y_border-100*A[i]);
         scene_1->addLine(point.x(), point.y(), 10+10*W[i+1], upper_y_border-100*A[i+1], pen);
     }
+    reset_scale();
 }
 
 void Chart::on_pushButton_clicked()
@@ -222,8 +238,12 @@ void Chart::reset_scale()
 {
     ui->graphicsView->resetTransform();
     if (window)
-        scaling = x_axis.length()>y_axis.length()? scaling = (589/x_axis.length()):scaling = (407/y_axis.length());
+        scaling = x_axis.length()>y_axis.length()?589/x_axis.length():407/y_axis.length();
     else
-        scaling = x_axis_spectre.length()>y_axis_spectre.length()? scaling = (589/x_axis_spectre.length()):scaling = (407/y_axis_spectre.length());
-    ui->graphicsView->scale(scaling*0.9,scaling*0.9);
+
+        scaling = x_axis_spectre.length()>y_axis_spectre.length()?589/x_axis_spectre.length():407/y_axis_spectre.length();
+
+
+    ui->graphicsView->scale(0.95*scaling,0.95*scaling);
+
 }

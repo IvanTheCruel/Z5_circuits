@@ -104,7 +104,9 @@
             </font>
            </property>
            <property name="text">
+
             <string/>
+
            </property>
           </widget>
          </item>
@@ -116,7 +118,9 @@
             </font>
            </property>
            <property name="text">
+
             <string/>
+
            </property>
           </widget>
          </item>
