@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 #include "chart.h"
+#include "help.h"
 #include <fstream>
 #include <QFile>
 #include <QTime>
@@ -40,6 +41,8 @@ private slots:
 
     void progresscheck(int state);
 
+    void on_action_3_triggered();
+
 private:
     int N;
     double T;
@@ -51,6 +54,7 @@ private:
     QStandardItemModel *model1;
     QModelIndex ind;
     Chart ch;
+    help he;
     QTimer *timer;
 
 };

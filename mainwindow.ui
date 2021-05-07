@@ -160,7 +160,7 @@
      <x>0</x>
      <y>0</y>
      <width>796</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -177,6 +177,7 @@
     <property name="title">
      <string>Помощь</string>
     </property>
+    <addaction name="action_3"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -191,9 +192,6 @@
    <property name="text">
     <string>Импорт</string>
    </property>
-   <property name="shortcut">
-    <string>F1</string>
-   </property>
   </action>
   <action name="action_1">
    <property name="text">
@@ -203,6 +201,14 @@
   <action name="action_4">
    <property name="text">
     <string>Пример 2</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>Открыть файл помощи</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
  </widget>

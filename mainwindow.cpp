@@ -244,6 +244,16 @@ void MainWindow::on_pushButton_3_clicked()
     ch.build_spectre(A,psi,w);
     progresscheck(0);
 }
+
+void MainWindow::on_action_3_triggered()
+{
+    progresscheck(1);
+    he.show();
+    he.get_some_help();
+
+    progresscheck(0);
+}
+
 void MainWindow::progresscheck(int state)
 {
     if (state)
@@ -255,9 +265,10 @@ void MainWindow::progresscheck(int state)
         timer->start(3000);
         connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
     }
-        QTime dieTime= QTime::currentTime().addMSecs(1);
+        QTime dieTime= QTime::currentTime().addMSecs(10);
             while (QTime::currentTime() < dieTime)
                 QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
 
 
 }
+
