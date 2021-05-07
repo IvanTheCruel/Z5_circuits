@@ -90,9 +90,9 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
 
     for (int i=0; i<t.size()-1; i++){
         //xn
-        point.setX(100*t[i]);
-        point.setY(upper_y_border-100*temp[i]);
-        scene->addLine(point.x(), point.y(), 100*t[i+1], upper_y_border-100*temp[i+1], pen);
+        point.setX(100*W[i]);
+        point.setY(upper_y_border-100*A[i]);
+        scene->addLine(point.x(), point.y(), 100*W[i+1], upper_y_border-100*A[i+1], pen);
     }
 
 

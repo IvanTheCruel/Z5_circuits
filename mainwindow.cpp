@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     //fuck off
     enable_button1();
+
+    connect(ui->action, SIGNAL(triggered()), this, SLOT(test()), Qt::DirectConnection);
     //    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
 }
 
@@ -94,6 +96,27 @@ void MainWindow::test_slot(QModelIndex, QModelIndex, QVector<int>)
     ui->pushButton_2->setEnabled(temp);
 }
 
+void MainWindow::test()
+{
+    //ui->pushButton_3->setEnabled(false);
+    ofstream fout;
+    fout.open("data.csv");
+    QVector<double> t, xn, A, psi, w;
+
+    if (fout.is_open()){
+        for (int j = 0; j<5;j++){
+            for (int i = 0; i<N; i++){
+                ind = model1->index(j,i);
+                fout << ind.data().toDouble() << ';';
+
+            }
+            fout<< endl;
+        }
+    }
+    fout.close();
+
+}
+
 
 //////////////////////////////////////////////////////////////////////
 
@@ -114,7 +137,7 @@ void MainWindow::on_pushButton_2_clicked()
     for (int k = 0; k<N; k++){
         complex<double> sum = 0;
         for (int n = 0; n<N; n++){
-           sum += xn[n]*exp(-2*M_PI*k*n/N*rk);
+            sum += xn[n]*exp(-2*M_PI*k*n/N*rk);
         }
         Xn.push_back(sum);
 
