@@ -99,15 +99,7 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     text->setDefaultTextColor(Qt::black);
 
     //цена деления
-    QString hor = "Цен. дел. - верт. : ";
-    QString hor_num;
-    //hor_num.setNum();
-
-
-    QString vert =  " гориз. : ";
-    QString ver_num;
-
-    text = scene->addText(hor+vert,font);
+    text = scene->addText("Цен. дел. - верт. : 0,1  гориз. : 0,1",font);
     text->setPos(50, 10);
     text->setDefaultTextColor(Qt::black);
 
@@ -128,7 +120,7 @@ void Chart::build(QVector<double> t, QVector<double> xn)
 
     reset_scale();
 
-   //ui->graphicsView->scale(scaling,scaling);
+    //ui->graphicsView->scale(scaling,scaling);
 }
 
 void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double> W)
@@ -174,6 +166,11 @@ void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double
 
     text = scene_1->addText("ν",font);
     text->setPos(upper_x_border-20, upper_y_border - 20);
+    text->setDefaultTextColor(Qt::black);
+
+    //цена деления
+    text = scene_1->addText("Цен. дел. - верт. : 1  гориз. : 1",font);
+    text->setPos(50, 10);
     text->setDefaultTextColor(Qt::black);
 
 
@@ -244,8 +241,6 @@ void Chart::reset_scale()
     else
 
         scaling = x_axis_spectre.length()>y_axis_spectre.length()?589/x_axis_spectre.length():407/y_axis_spectre.length();
-
-
-    ui->graphicsView->scale(0.95*scaling,0.95*scaling);
+        ui->graphicsView->scale(0.95*scaling,0.95*scaling);
 
 }
