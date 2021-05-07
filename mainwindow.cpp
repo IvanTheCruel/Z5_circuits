@@ -87,7 +87,7 @@ void MainWindow::on_pushButton_clicked()
 
     connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_slot()), Qt::DirectConnection);
     progresscheck(0);
-   
+
 }
 
 void MainWindow::test_slot()
@@ -130,6 +130,8 @@ void MainWindow::fout()
     progresscheck(0);
 }
 
+
+
 void MainWindow::fin(){
     progresscheck(1);
     ifstream fin("data.csv");
@@ -150,28 +152,25 @@ void MainWindow::fin(){
                 }
                 getline(fin, temp, ';');
                 if (temp.find("\n") != std::string::npos) {
-                    input = input.fromStdString(temp);
-                    input.replace("\n","");
-                    input.replace(".",",");
+                    input.clear();
+                    for (auto i = temp.begin(); i != temp.end(); i++){
+                        if (*i != '\n')
+                            input.push_back(*i);
+                        else {
+                            input.replace(".",",");
+                            if(check.validate(input, pos) && input!=""){
+                                input.replace(",",".");
+                                inputdata.push_back(input.toDouble());
+                            }
+                            input.clear();
+                        }
+                    }
                     break;
                 }
                 input = input.fromStdString(temp);
                 input.replace(".",",");
             }
-            if(j==0){
-                model1 = new QStandardItemModel(5,inputdata.size());
-                ui->tableView->setModel(model1);
-                ui->lineEdit->setText(QString::number(inputdata.size()));
-                ui->lineEdit_2->setText(QString::number(inputdata[inputdata.size()-1]));
-                ui->pushButton->setText("Изменить таблицу");
-                //ui->pushButton_2->setEnabled(false);
-                ui->lineEdit->setEnabled(false);
-                ui->lineEdit_2->setEnabled(false);
-                N = ui->lineEdit->text().toInt();
-                T = ui->lineEdit_2->text().toDouble();
-                model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
-                check_T = true; check_N = true;
-            }
+            if(j==0) costil(inputdata);
             for (int i = 0; i<inputdata.size(); i++){
                 ind = model1->index(j,i);
                 model1->setData(ind, inputdata[i]);
@@ -183,6 +182,23 @@ void MainWindow::fin(){
     fin.close();
     progresscheck(0);
 }
+
+void MainWindow::costil(QVector<double> &inputdata)
+{
+    model1 = new QStandardItemModel(5,inputdata.size());
+    ui->tableView->setModel(model1);
+    ui->lineEdit->setText(QString::number(inputdata.size()));
+    ui->lineEdit_2->setText(QString::number(inputdata[inputdata.size()-1]));
+    ui->pushButton->setText("Изменить таблицу");
+    //ui->pushButton_2->setEnabled(false);
+    ui->lineEdit->setEnabled(false);
+    ui->lineEdit_2->setEnabled(false);
+    N = ui->lineEdit->text().toInt();
+    T = ui->lineEdit_2->text().toDouble();
+    model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
+    check_T = true; check_N = true;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////
@@ -254,6 +270,7 @@ void MainWindow::on_action_3_triggered()
     progresscheck(0);
 }
 
+
 void MainWindow::progresscheck(int state)
 {
     if (state)
@@ -265,9 +282,9 @@ void MainWindow::progresscheck(int state)
         timer->start(3000);
         connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
     }
-        QTime dieTime= QTime::currentTime().addMSecs(10);
-            while (QTime::currentTime() < dieTime)
-                QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
+    QTime dieTime= QTime::currentTime().addMSecs(10);
+    while (QTime::currentTime() < dieTime)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
 
 
 }

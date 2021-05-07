@@ -44,6 +44,7 @@ private slots:
     void on_action_3_triggered();
 
 private:
+    void costil(QVector<double> &);
     int N;
     double T;
     void enable_button1();
