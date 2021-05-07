@@ -6,6 +6,7 @@
 #include <cmath>
 #include <complex>
 #include <cmath>
+#include <algorithm>
 
 namespace Ui {
 class Chart;

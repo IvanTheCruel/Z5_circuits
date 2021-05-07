@@ -23,46 +23,42 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
     pen.setColor("orange");
     pen.setWidth(1);
     QPointF point;
-
-    //////////////////////////////////////
-    QVector <QPointF> points;
-
-    // Fill in points with n number of points
-    for(int i = 0; i < 100; i++)
-        points.append(QPointF((i+2)*5, 250+50*sin((i+2)*50)));
-
-    // Create a view, put a scene in it and add tiny circles
-    // in the scene
-
-
-
-    pen.setWidth(1);
-
-    for (int i = 0; i < 50; i++){
-        scene->addLine(10+i*10, 0, 10+i*10, 500, pen);
-        scene->addLine(0, 10+i*10, 500, 10+i*10, pen);
+    double upper_y_border = 50 + 100 * *std::max_element(xn.begin(), xn.end());
+    double upper_x_border = 50 + 100 * *std::max_element(t.begin(), t.end());
+    double lower_y_border;
+    if(*std::min_element(xn.begin(), xn.end()) < 0){
+        lower_y_border = 50  - 100 * *std::min_element(xn.begin(), xn.end());
+    }
+    else{
+        lower_y_border = 50;
     }
 
-    //scene->setBackgroundBrush(Qt::white);
-    QBrush bruh;
+    //////////////////////////////////////
+
+    //пример
+    //    for(int i = 0; i < 100; i++)
+    //        points.append(QPointF((i+2)*5, 250+50*sin((i+2)*50)));
+
+
+    for (int i = 0; i < upper_x_border/10; i++){
+        scene->addLine(10+i*10, 0, 10+i*10, upper_y_border+lower_y_border, pen);
+    }
+
+    for (int i = 0; i < (upper_y_border+lower_y_border)/10; i++){
+        scene->addLine(0, 10+i*10, upper_x_border, 10+i*10, pen);
+    }
+
+
     pen.setWidth(2);
-//    pen.setColor(Qt::red);
-//
-//    for(int i = 0; i< points.size()-1; i++){
-//        scene->addEllipse(points[i].x(), points[i].y(),2,2, pen, bruh);
-//        scene->addLine(points[i].x(), points[i].y(), points[i+1].x(), points[i+1].y(), pen);
-//    }
+
 
     pen.setColor(Qt::black);
     pen.setStyle(Qt::SolidLine);
 
-    scene->addLine(10, 0, 10, 500, pen);
-    scene->addLine(0, 250, 500, 250, pen);
 
-    // Show the view
-    //view->show();
-
-    // or add the view to the layout inside another widget
+    QLineF x_axis(0, upper_y_border, upper_x_border, upper_y_border);
+    scene->addLine(10, 0, 10, upper_y_border+lower_y_border, pen);
+    scene->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
 
 
     /////////////////////////////////////
@@ -70,9 +66,10 @@ void Chart::build(QVector<double> t, QVector<double> xn, QVector<double> A, QVec
     for (int i=0; i<t.size()-1; i++){
         //xn
         point.setX(100*t[i]);
-        point.setY(250-100*xn[i]);
-        scene->addLine(point.x(), point.y(), 100*t[i+1], 250-100*xn[i+1], pen);
-        //scene->addLine(10+i*10, 0, 10+i*10, 500, pen);
-        }
-    ui->graphicsView->show();
+        point.setY(upper_y_border-100*xn[i]);
+        scene->addLine(point.x(), point.y(), 100*t[i+1], upper_y_border-100*xn[i+1], pen);
+    }
+
+    double scaling = 589/x_axis.length();
+    ui->graphicsView->scale(scaling,scaling);
 }
