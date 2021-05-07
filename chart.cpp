@@ -19,33 +19,14 @@ Chart::~Chart()
     delete ui;
 }
 
-QVector<double> furie(QVector<double> t, QVector<double> A, QVector<double> psi, QVector<double> W){
-    QVector<double> temp;
-    int i = 0;
-    double sum = 0;
-    for (int Tx = 0; Tx<t.size(); Tx++){
-        temp.push_back(0);
-        sum+=A[0];
-        for (i = 1; i<t.size(); i++){
-            sum+=A[i]*sin(i*W[i]*t[Tx]+psi[i]);
-        }
-        temp[Tx]=sum;
-        sum=0;
-    }
-    return temp;
-}
-
 void Chart::build(QVector<double> t, QVector<double> xn)
 {
     ui->graphicsView->setScene(scene);
     scene->clear();
-    //ui->graphicsView->scale(1/scaling,1/scaling);
     QBrush bruh;
     QPen pen;
-    /*(Qt::DashLine);
-    pen.setColor("orange");
-    pen.setWidth(1);*/
     QPointF point;
+
     double upper_y_border = 50 + 100 * *std::max_element(xn.begin(), xn.end());
     double upper_x_border = 50 + 100 * *std::max_element(t.begin(), t.end());
     double lower_y_border;
@@ -54,7 +35,6 @@ void Chart::build(QVector<double> t, QVector<double> xn)
         lower_y_border = 50  - 100 * *std::min_element(xn.begin(), xn.end());
     else lower_y_border = 50;
 
-
     //рыжае
     pen.setStyle(Qt::DashLine);
     pen.setColor("orange");
@@ -62,13 +42,13 @@ void Chart::build(QVector<double> t, QVector<double> xn)
 
     for (int i = 0; i < upper_x_border/10; i++)
         scene->addLine(10+i*10, 0, 10+i*10, upper_y_border+lower_y_border, pen);
-    //scene->addLine(10, 0, 10, upper_y_border+lower_y_border, pen);
 
-    for (int i = 0; i < (upper_y_border+lower_y_border)/20; i++){
+    for (int i = 0; i < upper_y_border/10.0; i++){
         scene->addLine(0, upper_y_border-i*10, upper_x_border, upper_y_border-i*10, pen);
+    }
+    for (int i = 0; i < lower_y_border/10.0; i++){
         scene->addLine(0, upper_y_border+i*10, upper_x_border, upper_y_border+i*10, pen);
     }
-    //scene->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
 
 
 
@@ -120,16 +100,12 @@ void Chart::build(QVector<double> t, QVector<double> xn)
     }
 
     reset_scale();
-   //ui->graphicsView->scale(scaling,scaling);
 }
 
 void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double> W)
 {
     scene_1->clear();
     QPen pen;
-//    QPen pen(Qt::DashLine);
-//    pen.setColor("orange");
-//    pen.setWidth(1);
     QPointF point;
     double upper_y_border = 50 + 100 * *std::max_element(A.begin(), A.end());
     double upper_x_border = 50 + 10 * (*std::max_element(W.begin(), W.end())/2);
@@ -154,8 +130,6 @@ void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double
     y_axis_spectre = QLineF(10, 0, 10, upper_y_border);
     scene_1->addLine(10, 0, 10, upper_y_border, pen);
     scene_1->addLine(0, upper_y_border, upper_x_border, upper_y_border, pen);
-
-
 
 
     //подписи осей
@@ -242,7 +216,6 @@ void Chart::reset_scale()
     else
 
         scaling = x_axis_spectre.length()>y_axis_spectre.length()?589/x_axis_spectre.length():407/y_axis_spectre.length();
-
 
     ui->graphicsView->scale(0.95*scaling,0.95*scaling);
 

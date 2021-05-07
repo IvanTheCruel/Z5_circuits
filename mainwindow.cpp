@@ -178,10 +178,10 @@ void MainWindow::fin(){
             }
             inputdata.clear();
         }
+        test_slot();
     }
     fin.close();
     progresscheck(0);
-    test_slot();
 }
 
 
