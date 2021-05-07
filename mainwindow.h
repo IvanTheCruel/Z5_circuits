@@ -3,8 +3,6 @@
 
 #include <QMainWindow>
 #include <QStandardItemModel>
-#include <cmath>
-#include <complex>
 #include "chart.h"
 
 namespace Ui {
@@ -42,7 +40,6 @@ private:
     QStandardItemModel *model1;
     QModelIndex ind;
     Chart ch;
-
 };
 
 #endif // MAINWINDOW_H

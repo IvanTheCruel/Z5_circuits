@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QGraphicsView>
 #include <cmath>
+#include <complex>
+#include <cmath>
 
 namespace Ui {
 class Chart;
@@ -15,10 +17,13 @@ class Chart : public QDialog
 
 public:
     explicit Chart(QWidget *parent = nullptr);
-    ~Chart();
 
+    ~Chart();
+    void build(QVector<double>, QVector<double>, QVector<double>, QVector<double>, QVector<double>);
 private:
     Ui::Chart *ui;
+    QGraphicsView *view;
+    QGraphicsScene *scene;
 };
 
 #endif // CHART_H

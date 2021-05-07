@@ -54,7 +54,7 @@ void MainWindow::on_pushButton_clicked()
 
     if (ui->pushButton->text() == "Задать таблицу"){
         ui->pushButton->setText("Изменить таблицу");
-        ui->pushButton_2->setEnabled(false);
+        //ui->pushButton_2->setEnabled(false);
         ui->lineEdit->setEnabled(false);
         ui->lineEdit_2->setEnabled(false);
 
@@ -131,5 +131,20 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    QVector<double> t, xn, A, psi, w;
+    for (int i = 0; i<N; i++){
+        ind = model1->index(0,i);
+        t.push_back(ind.data().toDouble());
+        ind = model1->index(1,i);
+        xn.push_back(ind.data().toDouble());
+        ind = model1->index(2,i);
+        A.push_back(ind.data().toDouble());
+        ind = model1->index(3,i);
+        psi.push_back(ind.data().toDouble());
+        ind = model1->index(4,i);
+        w.push_back(ind.data().toDouble());
+    }
+
     ch.show();
+    ch.build(t,xn,A,psi,w);
 }
