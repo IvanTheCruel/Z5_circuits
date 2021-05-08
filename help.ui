@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1251"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>help</class>
  <widget class="QWidget" name="help">
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Помощь</string>
+   <string>РџРѕРјРѕС‰СЊ</string>
   </property>
   <widget class="QTextBrowser" name="textBrowser">
    <property name="geometry">
@@ -21,6 +21,9 @@
      <width>641</width>
      <height>481</height>
     </rect>
+   </property>
+   <property name="cursor" stdset="0">
+    <cursorShape>IBeamCursor</cursorShape>
    </property>
   </widget>
  </widget>
