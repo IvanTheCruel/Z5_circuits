@@ -95,7 +95,7 @@
     <item row="1" column="8">
      <widget class="QPushButton" name="pushButton_3">
       <property name="text">
-       <string>Сохранить график</string>
+       <string>Сохранить графики</string>
       </property>
      </widget>
     </item>

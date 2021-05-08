@@ -181,7 +181,8 @@ void Chart::on_pushButton_3_clicked()
 
     QPainter painter(&image);
     scene->render(&painter);
-    image.save("исходный_график.jpg");
+    QString path = QFileDialog::getSaveFileName(0, "Open Dialog", "Исходные_точки", "*.jpg");
+    image.save(path);
 
     scene_1->setSceneRect(scene_1->itemsBoundingRect());
     QImage image_1(scene_1->sceneRect().size().toSize(), QImage::Format_ARGB32);
@@ -189,7 +190,8 @@ void Chart::on_pushButton_3_clicked()
 
     QPainter painter_1(&image_1);
     scene_1->render(&painter_1);
-    image_1.save("спектр.jpg");
+    path = QFileDialog::getSaveFileName(0, "Open Dialog", "Спектр", "*.jpg");
+    image_1.save(path);
 
 }
 

@@ -8,6 +8,8 @@
 #include <cmath>
 #include <algorithm>
 #include <QGraphicsTextItem>
+#include <QFileDialog>
+#include <string>
 
 
 namespace Ui {

@@ -319,7 +319,6 @@ void MainWindow::on_action_3_triggered()
     progresscheck(1);
     he.show();
     he.get_some_help();
-
     progresscheck(0);
 }
 

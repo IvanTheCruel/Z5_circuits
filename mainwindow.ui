@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>796</width>
+    <width>844</width>
     <height>361</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>771</width>
+      <width>817</width>
       <height>300</height>
      </rect>
     </property>
@@ -104,9 +104,7 @@
             </font>
            </property>
            <property name="text">
-
             <string/>
-
            </property>
           </widget>
          </item>
@@ -118,9 +116,7 @@
             </font>
            </property>
            <property name="text">
-
             <string/>
-
            </property>
           </widget>
          </item>
@@ -135,7 +131,7 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Построить График</string>
+          <string>Построить Графики</string>
          </property>
         </widget>
        </item>
@@ -159,8 +155,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>796</width>
-     <height>20</height>
+     <width>844</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
