@@ -182,7 +182,7 @@ void MainWindow::fin(){//fuck off
         }
         for (int j = 0; j<2;j++){
             while (temp != "\n"){
-                if(check.validate(input, pos)){ //запись каждого и первого числа
+                if(check.validate(input, pos) && input!=""){ //запись каждого и первого числа
                     input.replace(",",".");
                     inputdata.push_back(input.toDouble());
                 } else inputdata.push_back(nan(""));
