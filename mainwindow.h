@@ -6,11 +6,11 @@
 #include "chart.h"
 #include "help.h"
 #include <fstream>
-#include <QFile>
 #include <QTime>
 #include <QTimer>
 #include <QFileDialog>
 #include <string>
+#include <QValidator>
 
 namespace Ui {
 class MainWindow;
@@ -19,6 +19,8 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    Chart ch;
+    help he;
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -31,7 +33,7 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void test_slot();
+    void test_model();
 
     void fout();
 
@@ -47,20 +49,20 @@ private slots:
 
 private:
     void costil(QVector<double> &);
+    bool get(std::string&, QString&, QDoubleValidator&, std::ifstream&, QVector<double>&);
+    void enable_button1();
+
     int N;
     double T;
-    void enable_button1();
-    //лучше пусть будут фолс
+
     bool check_N = false;
     bool check_T = false;
+    bool model_empty = true;
+
     Ui::MainWindow *ui;
     QStandardItemModel *model1;
     QModelIndex ind;
-    Chart ch;
-    help he;
     QTimer *timer;
-    bool model_empty = true;
-
 };
 
 #endif // MAINWINDOW_H

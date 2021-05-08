@@ -87,24 +87,35 @@ void MainWindow::on_pushButton_clicked()
         model_empty = true;
     }
 
-    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_slot()), Qt::DirectConnection);
+    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()), Qt::DirectConnection);
     progresscheck(0);
 
 }
 
-void MainWindow::test_slot()
+void MainWindow::test_model()
 {
     QString input;
     int pos = 0;
     QDoubleValidator check(-400000, 400000, 1000, this);
     bool temp = true;
+    bool is_nan =false; //существует не существование
 
     for (int i = 0; i<N && temp; i++){
         ind = model1->index(1,i);
         input = ind.data().toString();
         input.replace(".",",");
         temp = check.validate(input,pos) == 2;
+        is_nan = is_nan || input == "nan";
+        ind = model1->index(0,i);
+        input = ind.data().toString();
+        input.replace(".",",");
+        temp = temp && check.validate(input,pos) == 2;
+        is_nan = is_nan || input == "nan";
     }
+
+    if (is_nan) progresscheck(5);
+    else progresscheck(0);
+
     ui->pushButton_2->setEnabled(temp);
 }
 
@@ -129,6 +140,10 @@ void MainWindow::fout()
             }
             fout<< endl;
         }
+    } else {
+        progresscheck(3);
+        fout.close();
+        return;
     }
     fout.close();
     progresscheck(0);
@@ -136,64 +151,94 @@ void MainWindow::fout()
 
 
 
-void MainWindow::fin(){
+void MainWindow::fin(){//fuck off
     progresscheck(1);
+
+    //открытие файла
     QString path = QFileDialog::getOpenFileName(0, "Open Dialog", "", "*.csv");
     std::string path_1 = path.toLocal8Bit().constData();
     ifstream fin(path_1);
+
+    //проверка и считывание
     QString input; string temp; //работают в тандеме
     int pos = 0;
+
     QDoubleValidator check(-4000000, 4000000, 10000000, this);
     QVector<double> inputdata;
 
     if (fin.is_open()){
-        getline(fin, temp, ';');
-        if(temp == "")
-        {
+        //данные не пусты
+        /*if(!getline(fin, temp, ';')){
             fin.close();
-            progresscheck(0);
+            progresscheck(2);
             return;
         }
         input = input.fromStdString(temp);
-        input.replace(".",",");
+        input.replace(".",",");*/
+        if(!get(temp,input,check,fin,inputdata)){
+            fin.close();
+            progresscheck(2);
+            return;
+        }
         for (int j = 0; j<2;j++){
-            while (temp != "\n" && !(temp == "")){
-                if(check.validate(input, pos) && input!=""){
+            while (temp != "\n"){
+                if(check.validate(input, pos)){ //запись каждого и первого числа
                     input.replace(",",".");
                     inputdata.push_back(input.toDouble());
-                }
-                getline(fin, temp, ';');
-                if (temp.find("\n") != std::string::npos) {
-                    input.clear();
-                    for (auto i = temp.begin(); i != temp.end(); i++){
-                        if (*i != '\n')
-                            input.push_back(*i);
-                        else {
-                            input.replace(".",",");
-                            if(check.validate(input, pos) && input!=""){
-                                input.replace(",",".");
-                                inputdata.push_back(input.toDouble());
-                            }
-                            input.clear();
-                        }
-                    }
-                    break;
-                }
-                input = input.fromStdString(temp);
-                input.replace(".",",");
+                } else inputdata.push_back(nan(""));
+                if(!get(temp,input,check,fin,inputdata)) break;
             }
-            if(j==0) costil(inputdata);
+            if(j==0) { //при первом проходе
+                if(inputdata.size()>=5) costil(inputdata);
+                else {
+                    fin.close();
+                    progresscheck(4);
+                    return;
+                }
+            }
             for (int i = 0; i<inputdata.size(); i++){
                 ind = model1->index(j,i);
                 model1->setData(ind, inputdata[i]);
             }
-            inputdata.clear();
+            inputdata.clear();//чистим за собой
         }
-        test_slot();
+        test_model();
     }
     fin.close();
-    progresscheck(0);
+
 }
+
+bool MainWindow::get(string &temp, QString &input, QDoubleValidator &check, ifstream &fin, QVector<double> &inputdata)
+{
+    int pos = 0;
+    if(!getline(fin, temp, ';')){ //проверяем можно ли читать дальше
+        input.clear();
+        return false;
+    }
+    if (temp.find("\n") != std::string::npos) { //переход на новую строку может быть странно форматирован
+        input.clear(); //готовим input
+        for (auto i = temp.begin(); i != temp.end(); i++){ //Разрываем запись 5.3\n2 на 5.3 и 2
+            if (*i != '\n')
+                input.push_back(*i);
+            else {
+                input.replace(".",",");
+                if(input!=""){
+                    if(check.validate(input, pos)){
+                        input.replace(",",".");
+                        inputdata.push_back(input.toDouble());
+                    } else inputdata.push_back(nan(""));
+                }
+                input.clear(); //чистим за собой
+            }
+        }
+        input.replace(".",",");
+        return false;//если найдена новая строка идем дальше
+    }
+    input = input.fromStdString(temp);
+    input.replace(".",",");
+    return true;
+}
+
 
 void MainWindow::costil(QVector<double> &inputdata)
 {
@@ -210,8 +255,8 @@ void MainWindow::costil(QVector<double> &inputdata)
     T = ui->lineEdit_2->text().toDouble();
     model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
     check_T = true; check_N = true;
+    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()), Qt::DirectConnection);
 }
-
 
 
 //////////////////////////////////////////////////////////////////////
@@ -286,20 +331,39 @@ void MainWindow::on_action_3_triggered()
 
 void MainWindow::progresscheck(int state)
 {
-    if (state)
-    {
-        ui->textBrowser->setText("Выполняется...");
-    }else
-    {
+    switch (state) {
+    case 0:
         ui->textBrowser->setText("Выполнено!");
         timer->start(3000);
         connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
+        break;
+    case 1:
+        ui->textBrowser->setText("Выполняется...");
+        break;
+    case 2:
+        ui->textBrowser->setText("Ошибка считывания: файл пуст!");
+        timer->start(30000);
+        connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
+        break;
+    case 3:
+        ui->textBrowser->setText("Ошибка записи: нельзя сохранить файл");
+        timer->start(30000);
+        connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
+        break;
+    case 4:
+        ui->textBrowser->setText("Ошибка cчитывания: слишком мало данных");
+        timer->start(30000);
+        connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
+        break;
+    case 5:
+        ui->textBrowser->setText("Ошибка cчитывания: часть данных записана неверно, установлено NaN");
+        timer->start(30000);
+        connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
+        break;
     }
     QTime dieTime= QTime::currentTime().addMSecs(10);
     while (QTime::currentTime() < dieTime)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
-
-
 }
 
 
