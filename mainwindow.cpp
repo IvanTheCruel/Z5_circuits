@@ -29,74 +29,86 @@ MainWindow::~MainWindow()
 void MainWindow::example1()
 {
     progresscheck(1);
-    N = 300;
-    T = 5;
-    QString s = QString::number(N);
-    ui->lineEdit->setText(s);
-    s = QString::number(T);
-    ui->lineEdit_2->setText(s);
-    model1 = new QStandardItemModel(5,N);
-    model_empty = false;
-    ui->tableView->setModel(model1);
-    model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
+    if (model_empty == true)
+    {
+        N = 300;
+        T = 5;
+        QString s = QString::number(N);
+        ui->lineEdit->setText(s);
+        s = QString::number(T);
+        ui->lineEdit_2->setText(s);
+        model1 = new QStandardItemModel(5,N);
+        model_empty = false;
+        ui->tableView->setModel(model1);
+        model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
 
-    if (ui->pushButton->text() == "Задать таблицу"){
-        ui->pushButton->setText("Изменить таблицу");
+        if (ui->pushButton->text() == "Задать таблицу"){
+            ui->pushButton->setText("Изменить таблицу");
 
-        ui->lineEdit->setEnabled(false);
-        ui->lineEdit_2->setEnabled(false);
+            ui->lineEdit->setEnabled(false);
+            ui->lineEdit_2->setEnabled(false);
 
-        double h = T/(N-1);
-        for(int i = 0; i<N; i++){
-            ind = model1->index(0,i);
-            model1->setData(ind, h*i);
+            double h = T/(N-1);
+            for(int i = 0; i<N; i++){
+                ind = model1->index(0,i);
+                model1->setData(ind, h*i);
 
 
-            ind = model1->index(1,i);
-//            model1->setData(ind, abs(cos(h*i)));
-            model1->setData(ind, (sin(10*2*M_PI*h*i)+0.5*sin(5*2*M_PI*h*i)));
+                ind = model1->index(1,i);
+                //            model1->setData(ind, abs(cos(h*i)));
+                model1->setData(ind, (sin(10*2*M_PI*h*i)+0.5*sin(5*2*M_PI*h*i)));
+            }
         }
-    }
-    test_model();
+        test_model();
 
-    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()), Qt::DirectConnection);
-    progresscheck(0);
+        connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()), Qt::DirectConnection);
+        progresscheck(0);
+    }else
+    {
+        progresscheck(6);
+    }
 
 }
 
 void MainWindow::example2()
 {
     progresscheck(1);
-    N = 300;
-    T = 5;
-    QString s = QString::number(N);
-    ui->lineEdit->setText(s);
-    s = QString::number(T);
-    ui->lineEdit_2->setText(s);
-    model1 = new QStandardItemModel(5,N);
-    model_empty = false;
-    ui->tableView->setModel(model1);
-    model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
+    if (model_empty == true)
+    {
+        N = 300;
+        T = 5;
+        QString s = QString::number(N);
+        ui->lineEdit->setText(s);
+        s = QString::number(T);
+        ui->lineEdit_2->setText(s);
+        model1 = new QStandardItemModel(5,N);
+        model_empty = false;
+        ui->tableView->setModel(model1);
+        model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
 
-    if (ui->pushButton->text() == "Задать таблицу"){
-        ui->pushButton->setText("Изменить таблицу");
+        if (ui->pushButton->text() == "Задать таблицу"){
+            ui->pushButton->setText("Изменить таблицу");
 
-        ui->lineEdit->setEnabled(false);
-        ui->lineEdit_2->setEnabled(false);
+            ui->lineEdit->setEnabled(false);
+            ui->lineEdit_2->setEnabled(false);
 
-        double h = T/(N-1);
-        for(int i = 0; i<N; i++){
-            ind = model1->index(0,i);
-            model1->setData(ind, h*i);
+            double h = T/(N-1);
+            for(int i = 0; i<N; i++){
+                ind = model1->index(0,i);
+                model1->setData(ind, h*i);
 
 
-            ind = model1->index(1,i);
-            model1->setData(ind, abs(cos(h*i)));
+                ind = model1->index(1,i);
+                model1->setData(ind, abs(cos(h*i)));
+            }
         }
+        test_model();
+        connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()), Qt::DirectConnection);
+        progresscheck(0);
+    }else
+    {
+        progresscheck(6);
     }
-    test_model();
-    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()), Qt::DirectConnection);
-    progresscheck(0);
 
 }
 
@@ -428,6 +440,11 @@ void MainWindow::progresscheck(int state)
         break;
     case 5:
         ui->textBrowser->setText("Ошибка cчитывания: часть данных записана неверно, установлено NaN");
+        timer->start(30000);
+        connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
+        break;
+    case 6:
+        ui->textBrowser->setText("Ошибка загрузки: таблица уже заполнена!");
         timer->start(30000);
         connect(timer, &QTimer::timeout,  [=](){ui->textBrowser->setText("");});
         break;
