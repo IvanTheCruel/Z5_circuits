@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action, SIGNAL(triggered()), this, SLOT(fout()), Qt::DirectConnection);
     connect(ui->action_2, SIGNAL(triggered()), this, SLOT(fin()), Qt::DirectConnection);
     connect(ui->action_1, SIGNAL(triggered()), this, SLOT(example1()), Qt::DirectConnection);
+    connect(ui->action_4, SIGNAL(triggered()), this, SLOT(example2()), Qt::DirectConnection);
 
     setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
 
@@ -58,6 +59,42 @@ void MainWindow::example1()
     }
     test_model();
 
+    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()), Qt::DirectConnection);
+    progresscheck(0);
+
+}
+
+void MainWindow::example2()
+{
+    progresscheck(1);
+    N = 300;
+    T = 5;
+    QString s = QString::number(N);
+    ui->lineEdit->setText(s);
+    s = QString::number(T);
+    ui->lineEdit_2->setText(s);
+    model1 = new QStandardItemModel(5,N);
+    model_empty = false;
+    ui->tableView->setModel(model1);
+    model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
+
+    if (ui->pushButton->text() == "Задать таблицу"){
+        ui->pushButton->setText("Изменить таблицу");
+
+        ui->lineEdit->setEnabled(false);
+        ui->lineEdit_2->setEnabled(false);
+
+        double h = T/(N-1);
+        for(int i = 0; i<N; i++){
+            ind = model1->index(0,i);
+            model1->setData(ind, h*i);
+
+
+            ind = model1->index(1,i);
+            model1->setData(ind, abs(cos(h*i)));
+        }
+    }
+    test_model();
     connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()), Qt::DirectConnection);
     progresscheck(0);
 

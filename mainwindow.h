@@ -49,6 +49,8 @@ private slots:
 
     void example1();
 
+    void example2();
+
 private:
     void costil(QVector<double> &);
     bool get(std::string&, QString&, QDoubleValidator&, std::ifstream&, QVector<double>&);
