@@ -193,6 +193,7 @@ void MainWindow::test_model()
     else progresscheck(0);
 
     ui->pushButton_2->setEnabled(temp);
+    ui->pushButton_3->setEnabled(temp);
 }
 
 void MainWindow::fout()
