@@ -149,8 +149,6 @@ void MainWindow::fout()
     progresscheck(0);
 }
 
-
-
 void MainWindow::fin(){//fuck off
     progresscheck(1);
 
@@ -204,6 +202,7 @@ void MainWindow::fin(){//fuck off
             inputdata.clear();//чистим за собой
         }
         test_model();
+        connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()));
     }
     fin.close();
 
@@ -240,7 +239,6 @@ bool MainWindow::get(string &temp, QString &input, QDoubleValidator &check, ifst
     return true;
 }
 
-
 void MainWindow::costil(QVector<double> &inputdata)
 {
     model1 = new QStandardItemModel(5,inputdata.size());
@@ -256,17 +254,12 @@ void MainWindow::costil(QVector<double> &inputdata)
     T = ui->lineEdit_2->text().toDouble();
     model1->setVerticalHeaderLabels({"t","a(t)","A","ψ","ν"});
     check_T = true; check_N = true;
-    connect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()), Qt::DirectConnection);
 }
-
-
-//////////////////////////////////////////////////////////////////////
-
 
 void MainWindow::on_pushButton_2_clicked()
 {
     progresscheck(1);
-
+    disconnect(ui->tableView->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(test_model()));
     ui->pushButton_3->setEnabled(true);
 
     QVector<double> xn;
@@ -294,6 +287,7 @@ void MainWindow::on_pushButton_2_clicked()
         ind = model1->index(4,k);
         model1->setData(ind, k/T);
     }
+
     progresscheck(0);
 }
 
