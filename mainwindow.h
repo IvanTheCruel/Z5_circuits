@@ -47,6 +47,8 @@ private slots:
 
     void on_action_3_triggered();
 
+    void example1();
+
 private:
     void costil(QVector<double> &);
     bool get(std::string&, QString&, QDoubleValidator&, std::ifstream&, QVector<double>&);
