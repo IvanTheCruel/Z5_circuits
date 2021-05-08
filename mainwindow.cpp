@@ -72,9 +72,9 @@ void MainWindow::on_pushButton_clicked()
             model1->setData(ind, h*i);
 
             //это надо так то задавать руками
-            ind = model1->index(1,i);
+            //ind = model1->index(1,i);
             //model1->setData(ind, abs(cos(h*i)));
-            model1->setData(ind, (sin(10*2*M_PI*h*i)+0.5*sin(5*2*M_PI*h*i)));
+            //model1->setData(ind, (sin(10*2*M_PI*h*i)+0.5*sin(5*2*M_PI*h*i)));
         }
     } else {
         ui->pushButton->setText("Задать таблицу");

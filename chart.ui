@@ -108,7 +108,7 @@
        </size>
       </property>
       <property name="text">
-       <string>сброс</string>
+       <string>Сброс</string>
       </property>
      </widget>
     </item>
