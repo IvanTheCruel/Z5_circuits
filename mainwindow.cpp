@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action, SIGNAL(triggered()), this, SLOT(fout()), Qt::DirectConnection);
     connect(ui->action_2, SIGNAL(triggered()), this, SLOT(fin()), Qt::DirectConnection);
 
-    //    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
+    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
 
     timer = new QTimer();
 }

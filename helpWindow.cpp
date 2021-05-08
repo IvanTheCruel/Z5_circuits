@@ -9,6 +9,7 @@ help::help(QWidget *parent) :
 {
     ui->setupUi(this);
     get_some_help();
+    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
 }
 
 help::~help()
