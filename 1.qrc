@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>help</file>
+    </qresource>
+</RCC>

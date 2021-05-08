@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 #include "chart.h"
-#include "help.h"
+#include "helpWindow.h"
 #include <fstream>
 #include <QTime>
 #include <QTimer>

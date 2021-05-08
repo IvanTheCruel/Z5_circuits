@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <QGraphicsTextItem>
 
+
 namespace Ui {
 class Chart;
 }

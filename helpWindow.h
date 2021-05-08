@@ -2,9 +2,10 @@
 #define HELP_H
 
 #include <QWidget>
+#include <QIODevice>
 #include <QFile>
 #include <QTextStream>
-#include <QIODevice>
+
 
 namespace Ui {
 class help;
