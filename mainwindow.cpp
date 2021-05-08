@@ -154,6 +154,7 @@ void MainWindow::fout()
 void MainWindow::fin(){//fuck off
     progresscheck(1);
 
+    ui->pushButton_3->setEnabled(false);
     //открытие файла
     QString path = QFileDialog::getOpenFileName(0, "Open Dialog", "", "*.csv");
     std::string path_1 = path.toLocal8Bit().constData();
