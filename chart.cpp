@@ -23,6 +23,7 @@ void Chart::build(QVector<double> t, QVector<double> xn)
 {
     ui->graphicsView->setScene(scene);
     scene->clear();
+    reset_scale();
     QBrush bruh;
     QPen pen;
     QPointF point;
@@ -102,6 +103,7 @@ void Chart::build_spectre(QVector<double> A, QVector<double> psi, QVector<double
     scene_1->clear();
     QPen pen;
     QPointF point;
+    reset_scale();
     double upper_y_border = 50 + 100 * *std::max_element(A.begin(), A.end());
     double upper_x_border = 50 + 10 * (*std::max_element(W.begin(), W.end())/2);
 
@@ -213,10 +215,10 @@ void Chart::on_pushButton_6_clicked()
 void Chart::reset_scale()
 {
     ui->graphicsView->resetTransform();
+    double scaling;
     if (window)
         scaling = x_axis.length()>y_axis.length()?589/x_axis.length():407/y_axis.length();
     else
-
         scaling = x_axis_spectre.length()>y_axis_spectre.length()?589/x_axis_spectre.length():407/y_axis_spectre.length();
     ui->graphicsView->scale(0.95*scaling,0.95*scaling);
 }

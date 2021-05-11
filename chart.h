@@ -46,7 +46,6 @@ private:
     QGraphicsView *view;
     QGraphicsScene *scene;
     QGraphicsScene *scene_1;
-    double scaling=1;
     QLineF x_axis = QLineF(0,0,0,0);
     QLineF y_axis = QLineF(0,0,0,0);
     QLineF x_axis_spectre = QLineF(0,0,0,0);
