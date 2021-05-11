@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //fuck off
     enable_button1();
 
     connect(ui->action, SIGNAL(triggered()), this, SLOT(fout()), Qt::DirectConnection);
@@ -205,7 +204,7 @@ void MainWindow::test_model()
     else progresscheck(0);
 
     ui->pushButton_2->setEnabled(temp);
-    ui->pushButton_3->setEnabled(temp);
+    //ui->pushButton_3->setEnabled(temp);
 }
 
 void MainWindow::fout()
